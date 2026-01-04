@@ -6,6 +6,8 @@
       ../../modules/home-manager/hypr.nix
       ../../modules/home-manager/gaming.nix
       ../../modules/home-manager/apps.nix
+      ../../modules/home-manager/kitty.nix
+      ../../modules/home-manager/nvim.nix
     ];
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";

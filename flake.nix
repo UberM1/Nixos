@@ -10,19 +10,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Nixvim
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Ax Shell
     ax-shell = {
       url = "github:poogas/Ax-Shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, nixvim, ... }@inputs: {
     nixosConfigurations.ubr = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;}; # Passes inputs to all modules
       modules = [
         ./hosts/default/configuration.nix
         inputs.home-manager.nixosModules.default
+        {
+          home-manager.sharedModules = [
+            nixvim.homeModules.nixvim
+          ];
+        }
       ];
     };
   };

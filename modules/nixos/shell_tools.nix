@@ -13,5 +13,7 @@
     fzf
     ripgrep
     htop
+    jq
+    doggo
   ];
 }
