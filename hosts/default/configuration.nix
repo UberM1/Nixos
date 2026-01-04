@@ -7,6 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/nixos/shell_tools.nix
     ];
 
   # Bootloader.
@@ -44,6 +45,7 @@
     variant = "";
   };
 
+  services.blueman.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ubr = {
@@ -71,7 +73,6 @@
     git 
    
     foot
-    wget
     glfw
 
     # Dolphin dependencies
@@ -136,20 +137,26 @@
   };
 
   services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    powerManagement = {
-      enable = false;
-      finegrained = false;
+  hardware = {
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
     };
-    open = true;
-    nvidiaSettings = true;
-    nvidiaPersistenced = true;
-    modesetting.enable = true;
-    prime = {
-      sync.enable = true;
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
+    nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      powerManagement = {
+        enable = false;
+        finegrained = false;
+      };
+      open = true;
+      nvidiaSettings = true;
+      nvidiaPersistenced = true;
+      modesetting.enable = true;
+      prime = {
+        sync.enable = true;
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
   };
 
