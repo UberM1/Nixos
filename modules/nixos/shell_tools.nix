@@ -15,5 +15,6 @@
     htop
     jq
     doggo
+    alejandra
   ];
 }

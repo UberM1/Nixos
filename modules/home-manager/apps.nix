@@ -1,7 +1,10 @@
-{ config, pkgs, ... }:
-
 {
-  programs.git  = {
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  programs.git = {
     settings = {
       user = {
         name = "mubr";
@@ -16,6 +19,8 @@
 
   home.packages = with pkgs; [
     obsidian
-    opencode
+    inputs.opencode.packages.${pkgs.system}.default
   ];
+
+  # programs.opencode.enable = true; does not work not well builded
 }

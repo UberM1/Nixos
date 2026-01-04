@@ -21,9 +21,18 @@
       url = "github:poogas/Ax-Shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    opencode.url = "github:sst/opencode/dev";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixvim, ... }@inputs: {
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    nixvim,
+    opencode,
+    ...
+  } @ inputs: {
     nixosConfigurations.ubr = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;}; # Passes inputs to all modules
