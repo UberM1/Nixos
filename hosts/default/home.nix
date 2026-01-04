@@ -8,6 +8,7 @@
       ../../modules/home-manager/apps.nix
       ../../modules/home-manager/kitty.nix
       ../../modules/home-manager/nvim.nix
+      ../../modules/home-manager/zsh.nix
     ];
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";

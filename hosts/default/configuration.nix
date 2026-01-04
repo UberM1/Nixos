@@ -53,6 +53,7 @@
     description = "ubr";
     extraGroups = [ "video" "audio" "disk" "storage" "networkmanager" "wheel" ];
     packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
   home-manager = { 
@@ -125,6 +126,8 @@
     enable = true;
     xwayland.enable = true;
   };
+
+  programs.zsh.enable = true;
 
   environment.sessionVariables = {
     # For invisible cursors

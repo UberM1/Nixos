@@ -93,6 +93,6 @@ in {
   };
 
   # Copy custom kittens to kitty config directory
-  home.file.".config/kitty/kittens/search.py".source = ../kittens/search.py;
-  home.file.".config/kitty/kittens/scroll_mark.py".source = ../kittens/scroll_mark.py;
+  home.file.".config/kitty/kittens/search.py".source = ./kittens/search.py;
+  home.file.".config/kitty/kittens/scroll_mark.py".source = ./kittens/scroll_mark.py;
 }
