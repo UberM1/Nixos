@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     opencode
     bluetuith
@@ -15,6 +17,7 @@
     htop
     jq
     doggo
+    btop
     alejandra
   ];
 }

@@ -1,15 +1,20 @@
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ 
-      ../../modules/home-manager/hypr.nix
-      ../../modules/home-manager/gaming.nix
-      ../../modules/home-manager/apps.nix
-      ../../modules/home-manager/kitty.nix
-      ../../modules/home-manager/nvim.nix
-      ../../modules/home-manager/zsh.nix
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    ../../modules/home-manager/hypr.nix
+    #      ../../modules/home-manager/gtk.nix
+    ../../modules/home-manager/cursor.nix
+    ../../modules/home-manager/gaming.nix
+    ../../modules/home-manager/apps.nix
+    ../../modules/home-manager/kitty.nix
+    ../../modules/home-manager/nvim.nix
+    ../../modules/home-manager/zsh.nix
+    ../../modules/home-manager/bars/ashell.nix
+  ];
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";
   # This value determines the Home Manager release that your configuration is
@@ -54,21 +59,21 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;
-  
+
   programs.ssh = {
-   enable = true;
-   enableDefaultConfig = false;
-   addKeysToAgent = "yes";
-   
-   matchBlocks = {
-     "*" = {
-       identityFile = "~/.ssh/dssh";
-     };
-     "github.com" = {
-       identityFile = "~/.ssh/dssh";
-     };
-   };
+    enable = true;
+    enableDefaultConfig = false;
+    addKeysToAgent = "yes";
+
+    matchBlocks = {
+      "*" = {
+        identityFile = "~/.ssh/dssh";
+      };
+      "github.com" = {
+        identityFile = "~/.ssh/dssh";
+      };
+    };
   };
 
- services.ssh-agent.enable = true; 
+  services.ssh-agent.enable = true;
 }

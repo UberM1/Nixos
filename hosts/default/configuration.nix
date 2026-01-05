@@ -1,14 +1,16 @@
 # Edit this configuration file to defcoine what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, inputs, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/nixos/shell_tools.nix
-    ];
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/nixos/shell_tools.nix
+  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -51,14 +53,16 @@
   users.users.ubr = {
     isNormalUser = true;
     description = "ubr";
-    extraGroups = [ "video" "audio" "disk" "storage" "networkmanager" "wheel" ];
+    extraGroups = ["video" "audio" "disk" "storage" "networkmanager" "wheel"];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
 
-  home-manager = { 
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
     backupFileExtension = "hm_backup";
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users = {
       "ubr" = import ./home.nix;
     };
@@ -71,10 +75,15 @@
     rofi
     firefox
     vim
-    git 
-   
+    git
+
     foot
     glfw
+
+    # GTK/GLib for Ax-Shell
+    glib
+    gobject-introspection
+    gsettings-desktop-schemas
 
     # Dolphin dependencies
     kdePackages.dolphin
@@ -93,7 +102,7 @@
   ];
 
   # Display manager (session manager)
-  services.displayManager = { 
+  services.displayManager = {
     ly = {
       enable = true;
     };
@@ -102,13 +111,16 @@
   # XDG
   xdg = {
     portal.enable = true;
-    portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];  
+    portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
     mime.enable = true;
-    menus.enable = true; 
+    menus.enable = true;
   };
 
   # Device connections
-  services.udisks2.enable = true;  
+  services.udisks2.enable = true;
+
+  # UPower (required by Ax-Shell even on desktop - design limitation)
+  services.upower.enable = true;
 
   # Enable Audio
   security.rtkit.enable = true;
@@ -137,6 +149,8 @@
     KITTY_ENABLE_WAYLAND = "1";
     QT_QPA_PLATFORM = "wayland";
     GDK_BACKEND = "wayland";
+    # For Ax-Shell GObject introspection
+    GI_TYPELIB_PATH = "${pkgs.glib.out}/lib/girepository-1.0:${pkgs.gobject-introspection}/lib/girepository-1.0";
   };
 
   services.xserver.videoDrivers = ["nvidia"];
@@ -170,6 +184,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
 }
