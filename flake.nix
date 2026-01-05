@@ -16,11 +16,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Ax Shell
-    ax-shell = {
-      url = "github:poogas/Ax-Shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Ax Shell - using its own nixpkgs for compatibility
+    # ax-shell = {
+    #   url = "github:poogas/Ax-Shell";
+    #   # Don't follow our nixpkgs - let it use its own unstable version
+    # };
 
     opencode.url = "github:sst/opencode/dev";
   };
