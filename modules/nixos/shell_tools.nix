@@ -5,6 +5,11 @@
 }: {
   environment.systemPackages = with pkgs; [
     opencode
+    cliphist
+
+    wl-color-picker
+    wl-clipboard
+
     bluetuith
     pulsemixer
     tree
@@ -19,5 +24,7 @@
     doggo
     btop
     alejandra
+
+    fastfetch
   ];
 }

@@ -4,6 +4,10 @@
   inputs,
   ...
 }: {
+  programs.firefox = {
+    enable = true;
+  };
+
   programs.git = {
     settings = {
       user = {
@@ -19,6 +23,7 @@
 
   home.packages = with pkgs; [
     obsidian
+    tor-browser
     inputs.opencode.packages.${pkgs.system}.default
   ];
 

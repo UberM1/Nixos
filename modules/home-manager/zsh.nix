@@ -49,7 +49,6 @@
       vpnlb = "sudo sysctl net.ipv6.conf.all.disable_ipv6=0;sudo openvpn /etc/openvpn/lb.ovpn";
       vpnesco = "sudo openvpn /etc/openvpn/matiasuberti-aws.ovpn";
       vpnhtb = "sudo sysctl net.ipv6.conf.all.disable_ipv6=0;sudo openvpn /etc/openvpn/academy-regular.ovpn";
-      xfreerdp = "xfreerdp3";
       aseprite = "steam steam://rungameid/431730;exit";
     };
 
