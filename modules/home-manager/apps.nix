@@ -24,6 +24,7 @@
   home.packages = with pkgs; [
     obsidian
     tor-browser
+    claude-code
     inputs.opencode.packages.${pkgs.system}.default
   ];
 

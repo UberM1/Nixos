@@ -9,7 +9,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./untraked.nix
+    ./untracked.nix
     ../../modules/nixos/shell_tools.nix
     ../../modules/nixos/privilaged.nix
     ../../modules/nixos/dolphin.nix
@@ -77,7 +77,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     kitty
-    rofi
     vim
     git
 
