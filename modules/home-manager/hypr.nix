@@ -147,7 +147,7 @@
         }
         {
           name = "huion-huion-tablet_h640p-1";
-          output = "HDMI-A-1";
+          output = "DP-1";
         }
       ];
 
@@ -282,11 +282,14 @@
     };
   };
 
+  programs.hyprshot = {
+    enable = true;
+    saveLocation = "$HOME/Pictures/Screenshots";
+  };
+
   # Install swww package
   home.packages = with pkgs; [
     swww
     hypridle
-    cliphist
-    wl-copy
   ];
 }

@@ -9,7 +9,10 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./untraked.nix
     ../../modules/nixos/shell_tools.nix
+    ../../modules/nixos/privilaged.nix
+    ../../modules/nixos/dolphin.nix
   ];
 
   # Bootloader.
@@ -17,12 +20,14 @@
   boot.loader.grub.device = "/dev/nvme0n1";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "nixos"; # Define your hostname.
 
+    # Enable networking
+    networkmanager.enable = true;
+  };
   # Set your time zone.
   time.timeZone = "America/Argentina/Buenos_Aires";
 
@@ -73,31 +78,18 @@
   environment.systemPackages = with pkgs; [
     kitty
     rofi
-    firefox
     vim
     git
 
     foot
     glfw
 
-    # GTK/GLib for Ax-Shell
+    # GTK/GLib
     glib
     gobject-introspection
     gsettings-desktop-schemas
 
     # Dolphin dependencies
-    kdePackages.dolphin
-    kdePackages.kio
-    kdePackages.kdf
-    kdePackages.kio-fuse
-    kdePackages.kio-extras
-    kdePackages.kio-admin
-    kdePackages.qtwayland
-    kdePackages.plasma-integration
-    kdePackages.kdegraphics-thumbnailers
-    kdePackages.breeze-icons
-    kdePackages.qtsvg
-    kdePackages.kservice
     shared-mime-info
   ];
 
