@@ -6,7 +6,7 @@
 }: {
   imports = [
     ../../modules/home-manager/hypr.nix
-    #      ../../modules/home-manager/gtk.nix
+    ../../modules/home-manager/hacking.nix
     ../../modules/home-manager/cursor.nix
     ../../modules/home-manager/gaming.nix
     ../../modules/home-manager/apps.nix

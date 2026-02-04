@@ -6,6 +6,10 @@
 }: {
   programs.firefox = {
     enable = true;
+    preferences = {
+      "browser.translations.enable" = false;
+      "browser.translations.automaticallyPopup" = false;
+    };
   };
 
   programs.git = {

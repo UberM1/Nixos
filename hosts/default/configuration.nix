@@ -27,6 +27,7 @@
 
     # Enable networking
     networkmanager.enable = true;
+    nameservers = ["1.1.1.1"];
   };
   # Set your time zone.
   time.timeZone = "America/Argentina/Buenos_Aires";
