@@ -26,5 +26,6 @@
     alejandra
 
     fastfetch
+    gimp
   ];
 }

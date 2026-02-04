@@ -146,7 +146,7 @@
           sensitivity = -0.5;
         }
         {
-          name = "huion-huion-tablet_h640p-1";
+          name = "huion-huion-tablet_h640p";
           output = "DP-1";
         }
       ];
