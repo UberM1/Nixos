@@ -6,10 +6,10 @@
 }: {
   programs.firefox = {
     enable = true;
-    preferences = {
-      "browser.translations.enable" = false;
-      "browser.translations.automaticallyPopup" = false;
-    };
+    # preferences = {    Ver como hacer esto, porque asi no es jaja
+    #   "browser.translations.enable" = false;
+    #   "browser.translations.automaticallyPopup" = false;
+    # };
   };
 
   programs.git = {
