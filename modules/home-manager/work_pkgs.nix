@@ -8,6 +8,7 @@
     # connection tools
     freerdp
     pscale
+    postgresql
     vault
 
     # k8s management

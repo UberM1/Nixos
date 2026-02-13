@@ -195,7 +195,6 @@
         [
           # Basic window management
           "$mainMod,Q,killactive,"
-          "$mainMod,C,exec,$terminal"
           "CTRL ALT,T,exec,$terminal"
           "$mainMod,M,exit,"
           "$mainMod,E,exec,$fileManager"
