@@ -13,6 +13,7 @@
     ../../modules/nixos/shell_tools.nix
     ../../modules/nixos/privilaged.nix
     ../../modules/nixos/dolphin.nix
+    inputs.hyprland.nixosModules.default
   ];
 
   # Bootloader.
@@ -68,7 +69,13 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hm_backup";
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = {
+      inherit inputs;
+      pkgs-unstable = import inputs.nixpkgs-unstable {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+    };
     users = {
       "ubr" = import ./home.nix;
     };

@@ -29,8 +29,5 @@
     obsidian
     tor-browser
     claude-code
-    inputs.opencode.packages.${pkgs.system}.default
   ];
-
-  # programs.opencode.enable = true; does not work not well builded
 }
