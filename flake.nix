@@ -19,13 +19,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Ax Shell - using its own nixpkgs for compatibility
-    # ax-shell = {
-    #   url = "github:poogas/Ax-Shell";
-    #   # Don't follow our nixpkgs - let it use its own unstable version
-    # };
+    hyprland.url = "github:hyprwm/Hyprland";
 
-    opencode.url = "github:sst/opencode/dev";
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
   };
 
   outputs = {
@@ -34,7 +33,6 @@
     nixpkgs-unstable,
     home-manager,
     nixvim,
-    opencode,
     ...
   } @ inputs: {
     nixosConfigurations.ubr = nixpkgs.lib.nixosSystem {

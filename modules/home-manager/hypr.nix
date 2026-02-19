@@ -8,10 +8,18 @@
     ./hyprlock.nix
     ./cursor.nix
     # ./hypridle.nix
+    inputs.hyprland.homeManagerModules.default
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    plugins = [
+      pkgs.hyprlandPlugins.hy3
+      inputs.hyprland-plugins.packages.${pkgs.system}.hyprexpo
+      inputs.hyprland-plugins.packages.${pkgs.system}.csgo-vulkan-fix
+      inputs.hyprland-plugins.packages.${pkgs.system}.hyprscrolling
+    ];
 
     settings = {
       # Monitor configuration
@@ -59,7 +67,6 @@
       # Decoration settings
       decoration = {
         rounding = 3;
-        rounding_power = 4;
         active_opacity = 1.0;
         inactive_opacity = 1;
         dim_inactive = false;
@@ -128,6 +135,16 @@
         disable_hyprland_logo = false;
       };
 
+      # Hyprexpo plugin configuration
+      plugin = {
+        hyprexpo = {
+          columns = 3;
+          gap_size = 5;
+          bg_col = "rgb(111111)";
+          workspace_method = "center current"; # Center around current workspace
+        };
+      };
+
       # Input settings
       input = {
         kb_layout = "us";
@@ -171,21 +188,20 @@
         "10,monitor:HDMI-A-1"
       ];
 
-      # Window rules
-      windowrulev2 = [
-        # Smart gaps window rules
-        "bordersize 0,floating:0,onworkspace:w[t1]"
-        "rounding 0,floating:0,onworkspace:w[t1]"
-        "bordersize 0,floating:0,onworkspace:w[tg1]"
-        "rounding 0,floating:0,onworkspace:w[tg1]"
-        "bordersize 0,floating:0,onworkspace:f[1]"
-        "rounding 0,floating:0,onworkspace:f[1]"
+      windowrule = [
+        # Smart gaps window rules - non-floating windows
+        "border_size 0, match:float 0, match:workspace w[t1]"
+        "rounding 0, match:float 0, match:workspace w[t1]"
+        "border_size 0, match:float 0, match:workspace w[tg1]"
+        "rounding 0, match:float 0, match:workspace w[tg1]"
+        "border_size 0, match:float 0, match:workspace f[1]"
+        "rounding 0, match:float 0, match:workspace f[1]"
 
         # Other window rules
-        "noblur,class:^()$,title:^()$"
-        "immediate,class:(Minecraft*)"
-        "suppressevent maximize,class:.*"
-        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+        "no_blur on, match:class ^()$, match:title ^()$"
+        "immediate on, match:class (Minecraft*)"
+        "suppress_event maximize, match:class .*"
+        "no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0"
       ];
 
       # Keybindings
@@ -253,6 +269,9 @@
 
           # Tablet toggle script
           "$mainMod,T,exec,/home/ubr/scripts/tablet-toggle.sh"
+
+          # Hyprexpo - workspace overview
+          "$mainMod,grave,hyprexpo:expo,toggle" # grave is the ` key
         ];
 
       # Media key bindings (with repeat)
