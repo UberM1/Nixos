@@ -19,7 +19,7 @@
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/nvme0n1";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.grub.useOSProber = false;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -61,7 +61,6 @@
     isNormalUser = true;
     description = "ubr";
     extraGroups = ["video" "audio" "disk" "storage" "networkmanager" "wheel"];
-    packages = with pkgs; [];
     shell = pkgs.zsh;
   };
 
@@ -72,7 +71,7 @@
     extraSpecialArgs = {
       inherit inputs;
       pkgs-unstable = import inputs.nixpkgs-unstable {
-        system = "x86_64-linux";
+        system = pkgs.stdenv.hostPlatform.system;
         config.allowUnfree = true;
       };
     };
@@ -183,6 +182,11 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    warn-dirty = false;
+    auto-optimise-store = true;
+  };
+
   nixpkgs.config.allowUnfree = true;
 }

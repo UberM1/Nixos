@@ -7,7 +7,9 @@
     enable = true;
     settings = {
       log_level = "warn";
-      outputs = "All";
+      outputs = {
+        Targets = ["DP-1" "HDMI-A-1"];
+      };
       position = "Top";
       app_launcher_cmd = "rofi -show drun";
       clipboard_cmd = "cliphist list | rofi -dmenu | cliphist decode | wl-copy";

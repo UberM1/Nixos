@@ -3,7 +3,9 @@
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  system = pkgs.stdenv.hostPlatform.system;
+in {
   imports = [
     ./hyprlock.nix
     ./cursor.nix
@@ -13,12 +15,12 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    package = inputs.hyprland.packages.${system}.hyprland;
     plugins = [
       pkgs.hyprlandPlugins.hy3
-      inputs.hyprland-plugins.packages.${pkgs.system}.hyprexpo
-      inputs.hyprland-plugins.packages.${pkgs.system}.csgo-vulkan-fix
-      inputs.hyprland-plugins.packages.${pkgs.system}.hyprscrolling
+      inputs.hyprland-plugins.packages.${system}.hyprexpo
+      inputs.hyprland-plugins.packages.${system}.csgo-vulkan-fix
+      inputs.hyprland-plugins.packages.${system}.hyprscrolling
     ];
 
     settings = {

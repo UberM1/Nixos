@@ -62,16 +62,15 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  nixpkgs.config.allowUnfree = true;
 
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    addKeysToAgent = "yes";
 
     matchBlocks = {
       "*" = {
         identityFile = "~/.ssh/dssh";
+        extraOptions.AddKeysToAgent = "yes";
       };
       "github.com" = {
         identityFile = "~/.ssh/dssh";
