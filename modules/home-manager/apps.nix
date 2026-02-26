@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   inputs,
   ...
 }: {
@@ -26,7 +27,7 @@
   };
 
   home.packages = with pkgs; [
-    obsidian
+    pkgs-unstable.obsidian
     tor-browser
     claude-code
   ];
