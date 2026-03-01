@@ -4,7 +4,7 @@
   ...
 }: {
   programs.ashell = {
-    enable = true;
+    enable = false;
     settings = {
       log_level = "warn";
       outputs = {
