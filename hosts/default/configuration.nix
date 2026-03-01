@@ -21,6 +21,10 @@
   boot.loader.grub.device = "/dev/nvme0n1";
   boot.loader.grub.useOSProber = false;
 
+  # DDC/CI for monitor brightness control
+  boot.kernelModules = ["i2c-dev"];
+  hardware.i2c.enable = true;
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   networking = {
@@ -86,6 +90,7 @@
     kitty
     vim
     git
+    ddcutil
 
     foot
     glfw
@@ -160,7 +165,7 @@
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
-        enable = false;
+        enable = true;
         finegrained = false;
       };
       open = true;
