@@ -33,6 +33,52 @@
         "type": "github"
       }
     },
+    "caelestia-cli": {
+      "inputs": {
+        "caelestia-shell": [
+          "caelestia-shell"
+        ],
+        "nixpkgs": [
+          "caelestia-shell",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771987897,
+        "narHash": "sha256-5pNQFGxG3fxS9pGnNBJjT76veotKIKq2XpAVFGAhCdI=",
+        "owner": "caelestia-dots",
+        "repo": "cli",
+        "rev": "b0d68f0a1c48fa138d6fde94dcbecea801a86a01",
+        "type": "github"
+      },
+      "original": {
+        "owner": "caelestia-dots",
+        "repo": "cli",
+        "type": "github"
+      }
+    },
+    "caelestia-shell": {
+      "inputs": {
+        "caelestia-cli": "caelestia-cli",
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "quickshell": "quickshell"
+      },
+      "locked": {
+        "lastModified": 1772330657,
+        "narHash": "sha256-cWblprYsDUeAWA57xAqxIjNxXvDI/rqYn6TFp2OPi/k=",
+        "owner": "caelestia-dots",
+        "repo": "shell",
+        "rev": "278fd4a4ed1bfb42c3fe197ff38b587539c012aa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "caelestia-dots",
+        "repo": "shell",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -580,6 +626,68 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "noctalia-qs": "noctalia-qs"
+      },
+      "locked": {
+        "lastModified": 1772582959,
+        "narHash": "sha256-06HgOL0amKRQkIqsDg7zYuaKDZ2myMh1dTjG+kH8XvQ=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "rev": "abb7704699a9239e289c6639140cf1a6ac23235b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "type": "github"
+      }
+    },
+    "noctalia-qs": {
+      "inputs": {
+        "nixpkgs": [
+          "noctalia",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772227064,
+        "narHash": "sha256-f821ZSoGpa/aXrWq0gPpea9qBnX8KDyavGKkptz2Mog=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-qs",
+        "rev": "0741d27d2f7db567270f139c5d1684614ecf9863",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-qs",
+        "type": "github"
+      }
+    },
+    "noctalia-qs_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772556237,
+        "narHash": "sha256-SRB80oNiuV2WC63iSWlanc+Dl3SMhs+46Af9wdCMf8o=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-qs",
+        "rev": "3455d5f266a95c5414da3fcd6dabcf266d1f9487",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-qs",
+        "type": "github"
+      }
+    },
     "nuschtosSearch": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -626,14 +734,38 @@
         "type": "github"
       }
     },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "caelestia-shell",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771926182,
+        "narHash": "sha256-QbXuSLhiSxOq6ydBL3+KGe1aiYWBW+e3J6qjJZaRMq0=",
+        "ref": "refs/heads/master",
+        "rev": "cddb4f061bab495f4473ca5f2c571b6c710efef7",
+        "revCount": 744,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
+        "caelestia-shell": "caelestia-shell",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprland-plugins": "hyprland-plugins",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nixvim": "nixvim"
+        "nixvim": "nixvim",
+        "noctalia": "noctalia",
+        "noctalia-qs": "noctalia-qs_2"
       }
     },
     "systems": {

@@ -7,7 +7,6 @@
   system = pkgs.stdenv.hostPlatform.system;
 in {
   imports = [
-    ./hyprlock.nix
     ./cursor.nix
     ./hypridle.nix
     inputs.hyprland.homeManagerModules.default
@@ -15,6 +14,7 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
+    systemd.enable = true;
     package = inputs.hyprland.packages.${system}.hyprland;
     plugins = [
       pkgs.hyprlandPlugins.hy3
@@ -40,12 +40,13 @@ in {
       # Programs
       "$terminal" = "kitty";
       "$fileManager" = "dolphin";
-      "$menu" = "rofi -show drun";
       "$mainMod" = "SUPER";
 
       # Autostart
       exec-once = [
-        "swww-daemon"
+        # noctalia-shell starts via systemd
+        # Set random wallpaper after noctalia starts (delay to ensure it's ready)
+        "sleep 2 && noctalia-shell ipc call wallpaper random"
       ];
 
       # General settings
@@ -82,7 +83,7 @@ in {
         blur = {
           enabled = true;
           size = 3;
-          passes = 1;
+          passes = 2;
           vibrancy = 0.1696;
         };
       };
@@ -189,6 +190,12 @@ in {
         "10,monitor:HDMI-A-1"
       ];
 
+
+      # Noctalia blur on dock peek
+      layerrule = [
+        "blur on, match:namespace ^(noctalia-dock-peek-.*)$"
+      ];
+
       windowrule = [
         # Smart gaps window rules - non-floating windows
         "border_size 0, match:float 0, match:workspace w[t1]"
@@ -203,6 +210,11 @@ in {
         "immediate on, match:class (Minecraft*)"
         "suppress_event maximize, match:class .*"
         "no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0"
+
+        # Arc Raiders - fullscreen and stay focused to prevent crash on match found
+        "fullscreen on, match:class (steam_app_1808500)"
+        "stay_focused on, match:class (steam_app_1808500)"
+        "immediate on, match:class (steam_app_1808500)"
       ];
 
       # Keybindings
@@ -213,7 +225,7 @@ in {
         "$mainMod,M,exit,"
         "$mainMod,E,exec,$fileManager"
         "$mainMod,V,togglefloating,"
-        "$mainMod,Space,exec,$menu"
+        "$mainMod,Space,exec,noctalia-shell ipc call launcher toggle"
         "$mainMod,P,pseudo,"
         "$mainMod SHIFT_L,D,togglesplit,"
         "$mainMod,D,swapsplit,"
@@ -263,7 +275,7 @@ in {
         "$shiftMod,PRINT,exec,hyprshot -m region"
 
         # Screen locking
-        "$mainMod,Escape,exec,hyprlock"
+        "$mainMod,Escape,exec,noctalia-shell ipc call lockScreen lock"
 
         # Tablet toggle script
         "$mainMod,T,exec,/home/ubr/scripts/tablet-toggle.sh"
@@ -303,9 +315,7 @@ in {
     saveLocation = "$HOME/Pictures/Screenshots";
   };
 
-  # Install swww package
   home.packages = with pkgs; [
-    swww
     hypridle
   ];
 }

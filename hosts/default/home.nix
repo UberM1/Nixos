@@ -13,7 +13,7 @@
     ../../modules/home-manager/kitty.nix
     ../../modules/home-manager/nvim.nix
     ../../modules/home-manager/zsh.nix
-    ../../modules/home-manager/bars/ashell.nix
+    ../../modules/home-manager/bars/noctalia-shell.nix
     ../../modules/home-manager/work_pkgs.nix
     ../../modules/home-manager/dolphin.nix
     ../../modules/home-manager/rofi.nix
