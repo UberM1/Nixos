@@ -64,7 +64,7 @@
   users.users.ubr = {
     isNormalUser = true;
     description = "ubr";
-    extraGroups = ["video" "audio" "disk" "storage" "networkmanager" "wheel"];
+    extraGroups = ["video" "audio" "disk" "storage" "networkmanager" "wheel" "i2c"];
     shell = pkgs.zsh;
   };
 
