@@ -21,7 +21,7 @@ in {
       disable_ligatures = "always";
       background_opacity = "0.85";
       background_blur = 20;
-      window_padding_width = 0;
+      window_padding_width = "0 0 18 0";
       enable_audio_bell = false;
       update_check_interval = 0;
       shell_integration = "enabled";
