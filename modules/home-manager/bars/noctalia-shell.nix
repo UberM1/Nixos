@@ -6,6 +6,8 @@
 }: {
   home.packages = with pkgs; [
     brightnessctl
+    cliphist
+    wl-clipboard
   ];
 
   programs.noctalia-shell = {
@@ -54,7 +56,7 @@
           center = [
             {
               id = "ActiveWindow";
-              colorizeIcons = true;
+              colorizeIcons = false;
               hideMode = "hidden";
               maxWidth = 145;
               scrollingMode = "hover";
@@ -199,7 +201,7 @@
       };
 
       location = {
-        name = "Tokyo";
+        name = "Rosario";
         weatherEnabled = true;
         weatherShowEffects = true;
         useFahrenheit = false;
@@ -208,7 +210,7 @@
         showCalendarEvents = true;
         showCalendarWeather = true;
         analogClockInCalendar = false;
-        firstDayOfWeek = -1;
+        firstDayOfWeek = 0;
         hideWeatherTimezone = false;
         hideWeatherCityName = false;
       };
@@ -245,7 +247,7 @@
         hideWallpaperFilenames = false;
         overviewBlur = 0.4;
         overviewTint = 0.6;
-        useWallhaven = false;
+        useWallhaven = true;
         wallhavenQuery = "";
         wallhavenSorting = "relevance";
         wallhavenOrder = "desc";
@@ -261,13 +263,13 @@
       };
 
       appLauncher = {
-        enableClipboardHistory = false;
+        enableClipboardHistory = true;
         autoPasteClipboard = false;
         enableClipPreview = true;
         clipboardWrapText = true;
         clipboardWatchTextCommand = "wl-paste --type text --watch cliphist store";
         clipboardWatchImageCommand = "wl-paste --type image --watch cliphist store";
-        position = "bottom_center";
+        position = "center";
         pinnedApps = [];
         useApp2Unit = false;
         sortByMostUsed = true;
@@ -275,7 +277,7 @@
         customLaunchPrefixEnabled = false;
         customLaunchPrefix = "";
         viewMode = "list";
-        showCategories = true;
+        showCategories = false;
         iconMode = "tabler";
         showIconBackground = false;
         enableSettingsSearch = true;
@@ -332,7 +334,7 @@
         diskAvailCriticalThreshold = 10;
         batteryWarningThreshold = 20;
         batteryCriticalThreshold = 5;
-        enableDgpuMonitoring = false;
+        enableDgpuMonitoring = true;
         useCustomColors = false;
         warningColor = "";
         criticalColor = "";
@@ -391,22 +393,23 @@
         largeButtonsStyle = true;
         largeButtonsLayout = "single-row";
         powerOptions = [
-          { action = "lock"; enabled = true; keybind = "1"; }
-          { action = "suspend"; enabled = true; keybind = "2"; }
-          { action = "hibernate"; enabled = true; keybind = "3"; }
-          { action = "reboot"; enabled = true; keybind = "4"; }
-          { action = "logout"; enabled = true; keybind = "5"; }
-          { action = "shutdown"; enabled = true; keybind = "6"; }
-          { action = "rebootToUefi"; enabled = true; keybind = "7"; }
+          { action = "lock"; command = ""; countdownEnabled = true; enabled = true; keybind = "1"; }
+          { action = "suspend"; command = ""; countdownEnabled = true; enabled = true; keybind = "2"; }
+          { action = "hibernate"; command = ""; countdownEnabled = true; enabled = true; keybind = "3"; }
+          { action = "reboot"; command = ""; countdownEnabled = true; enabled = true; keybind = "4"; }
+          { action = "logout"; command = ""; countdownEnabled = true; enabled = true; keybind = "5"; }
+          { action = "shutdown"; command = ""; countdownEnabled = true; enabled = true; keybind = "6"; }
+          { action = "rebootToUefi"; command = ""; countdownEnabled = true; enabled = true; keybind = "7"; }
+          { action = "userspaceReboot"; command = ""; countdownEnabled = true; enabled = false; keybind = ""; }
         ];
       };
 
       notifications = {
         enabled = true;
         enableMarkdown = false;
-        density = "default";
+        density = "compact";
         monitors = [];
-        location = "top_right";
+        location = "bottom_left";
         overlayLayer = true;
         backgroundOpacity = 1;
         respectExpireTimeout = false;
