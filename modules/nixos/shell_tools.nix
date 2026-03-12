@@ -23,6 +23,7 @@
     jq
     doggo
     btop
+    resources
     alejandra
 
     fastfetch
