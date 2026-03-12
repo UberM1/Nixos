@@ -37,15 +37,8 @@ in {
         "HYPRCURSOR_SIZE,24"
       ];
 
-      # Programs
-      "$terminal" = "kitty";
-      "$fileManager" = "dolphin";
-      "$mainMod" = "SUPER";
-
-      # Autostart
       exec-once = [
-        # noctalia-shell starts via systemd
-        # Set random wallpaper after noctalia starts (delay to ensure it's ready)
+        "noctalia-shell"
         "sleep 2 && noctalia-shell ipc call wallpaper random"
       ];
 
@@ -190,7 +183,6 @@ in {
         "10,monitor:HDMI-A-1"
       ];
 
-
       # Noctalia blur on dock peek
       layerrule = [
         "blur on, match:namespace ^(noctalia-dock-peek-.*)$"
@@ -210,81 +202,8 @@ in {
         "immediate on, match:class (Minecraft*)"
         "suppress_event maximize, match:class .*"
         "no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0"
-
-        # Arc Raiders - fullscreen and stay focused to prevent crash on match found
-        "fullscreen on, match:class (steam_app_1808500)"
-        "stay_focused on, match:class (steam_app_1808500)"
-        "immediate on, match:class (steam_app_1808500)"
       ];
 
-      # Keybindings
-      bind = [
-        # Basic window management
-        "$mainMod,Q,killactive,"
-        "CTRL ALT,T,exec,$terminal"
-        "$mainMod,M,exit,"
-        "$mainMod,E,exec,$fileManager"
-        "$mainMod,V,togglefloating,"
-        "$mainMod,Space,exec,noctalia-shell ipc call launcher toggle"
-        "$mainMod,P,pseudo,"
-        "$mainMod SHIFT_L,D,togglesplit,"
-        "$mainMod,D,swapsplit,"
-        "$mainMod,F,fullscreen"
-
-        # Focus movement (vim-style)
-        "$mainMod,h,movefocus,l"
-        "$mainMod,j,movefocus,d"
-        "$mainMod,k,movefocus,u"
-        "$mainMod,l,movefocus,r"
-
-        # Workspace switching
-        "$mainMod,1,workspace,1"
-        "$mainMod,2,workspace,2"
-        "$mainMod,3,workspace,3"
-        "$mainMod,4,workspace,4"
-        "$mainMod,5,workspace,5"
-        "$mainMod,6,workspace,6"
-        "$mainMod,7,workspace,7"
-        "$mainMod,8,workspace,8"
-        "$mainMod,9,workspace,9"
-        "$mainMod,0,workspace,10"
-
-        # Move windows to workspaces
-        "$mainMod SHIFT,1,movetoworkspace,1"
-        "$mainMod SHIFT,2,movetoworkspace,2"
-        "$mainMod SHIFT,3,movetoworkspace,3"
-        "$mainMod SHIFT,4,movetoworkspace,4"
-        "$mainMod SHIFT,5,movetoworkspace,5"
-        "$mainMod SHIFT,6,movetoworkspace,6"
-        "$mainMod SHIFT,7,movetoworkspace,7"
-        "$mainMod SHIFT,8,movetoworkspace,8"
-        "$mainMod SHIFT,9,movetoworkspace,9"
-        "$mainMod SHIFT,0,movetoworkspace,10"
-
-        # Special workspace (scratchpad)
-        "$mainMod,S,togglespecialworkspace,magic"
-        "$mainMod SHIFT,S,movetoworkspace,special:magic"
-
-        # Workspace scrolling
-        "$mainMod,mouse_down,workspace,e+1"
-        "$mainMod,mouse_up,workspace,e-1"
-
-        # Screenshots (hyprshot)
-        ",PRINT,exec,hyprshot -m output"
-        "$mainMod,PRINT,exec,hyprshot -m window"
-        "$shiftMod,PRINT,exec,hyprshot -m region"
-
-        # Screen locking
-        "$mainMod,Escape,exec,noctalia-shell ipc call lockScreen lock"
-
-        # Tablet toggle script
-        "$mainMod,T,exec,/home/ubr/scripts/tablet-toggle.sh"
-
-        # Hyprexpo - workspace overview
-        "$mainMod,grave,hyprexpo:expo,toggle" # grave is the ` key
-      ];
-
-      # Media key bindings (with repeat)
       bindel = [
         ",XF86AudioRaiseVolume,exec,wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
         ",XF86AudioLowerVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
@@ -294,20 +213,84 @@ in {
         ",XF86MonBrightnessDown,exec,brightnessctl s 10%-"
       ];
 
-      # Media control bindings (no repeat)
       bindl = [
         ",XF86AudioNext,exec,playerctl next"
         ",XF86AudioPause,exec,playerctl play-pause"
         ",XF86AudioPlay,exec,playerctl play-pause"
         ",XF86AudioPrev,exec,playerctl previous"
       ];
-
-      # Mouse bindings
-      bindm = [
-        "$mainMod,mouse:272,movewindow"
-        "$mainMod,mouse:273,resizewindow"
-      ];
     };
+
+    extraConfig = ''
+      $terminal = kitty
+      $fileManager = dolphin
+      $mainMod = SUPER
+
+      # 1. APPLICATIONS
+      bind = CTRL ALT,T,exec,$terminal #"Terminal"
+      bind = $mainMod,E,exec,$fileManager #"File Manager"
+      bind = $mainMod,Space,exec,noctalia-shell ipc call launcher toggle #"App Launcher"
+
+      # 2. WINDOW MANAGEMENT
+      bind = $mainMod,Q,killactive, #"Close Window"
+      bind = $mainMod,V,togglefloating, #"Toggle Floating"
+      bind = $mainMod,P,pseudo, #"Pseudo Tile"
+      bind = $mainMod SHIFT_L,D,togglesplit, #"Toggle Split"
+      bind = $mainMod,D,swapsplit, #"Swap Split"
+      bind = $mainMod,F,fullscreen #"Fullscreen"
+
+      # 3. FOCUS
+      bind = $mainMod,h,movefocus,l #"Focus Left"
+      bind = $mainMod,j,movefocus,d #"Focus Down"
+      bind = $mainMod,k,movefocus,u #"Focus Up"
+      bind = $mainMod,l,movefocus,r #"Focus Right"
+
+      # 4. WORKSPACES
+      bind = $mainMod,1,workspace,1 #"Workspace 1"
+      bind = $mainMod,2,workspace,2 #"Workspace 2"
+      bind = $mainMod,3,workspace,3 #"Workspace 3"
+      bind = $mainMod,4,workspace,4 #"Workspace 4"
+      bind = $mainMod,5,workspace,5 #"Workspace 5"
+      bind = $mainMod,6,workspace,6 #"Workspace 6"
+      bind = $mainMod,7,workspace,7 #"Workspace 7"
+      bind = $mainMod,8,workspace,8 #"Workspace 8"
+      bind = $mainMod,9,workspace,9 #"Workspace 9"
+      bind = $mainMod,0,workspace,10 #"Workspace 10"
+
+      # 5. MOVE WINDOWS
+      bind = $mainMod SHIFT,1,movetoworkspace,1 #"Move to WS 1"
+      bind = $mainMod SHIFT,2,movetoworkspace,2 #"Move to WS 2"
+      bind = $mainMod SHIFT,3,movetoworkspace,3 #"Move to WS 3"
+      bind = $mainMod SHIFT,4,movetoworkspace,4 #"Move to WS 4"
+      bind = $mainMod SHIFT,5,movetoworkspace,5 #"Move to WS 5"
+      bind = $mainMod SHIFT,6,movetoworkspace,6 #"Move to WS 6"
+      bind = $mainMod SHIFT,7,movetoworkspace,7 #"Move to WS 7"
+      bind = $mainMod SHIFT,8,movetoworkspace,8 #"Move to WS 8"
+      bind = $mainMod SHIFT,9,movetoworkspace,9 #"Move to WS 9"
+      bind = $mainMod SHIFT,0,movetoworkspace,10 #"Move to WS 10"
+
+      # 6. SCRATCHPAD
+      bind = $mainMod,S,togglespecialworkspace,magic #"Toggle Scratchpad"
+      bind = $mainMod SHIFT,S,movetoworkspace,special:magic #"Move to Scratchpad"
+
+      # 7. SCREENSHOTS
+      bind = ,PRINT,exec,hyprshot -m output #"Screenshot Monitor"
+      bind = $mainMod,PRINT,exec,hyprshot -m window #"Screenshot Window"
+      bind = $shiftMod,PRINT,exec,hyprshot -m region #"Screenshot Region"
+
+      # 8. SYSTEM
+      bind = $mainMod,M,exit, #"Exit Hyprland"
+      bind = $mainMod,Escape,exec,noctalia-shell ipc call lockScreen lock #"Lock Screen"
+      bind = $mainMod,T,exec,/home/ubr/scripts/tablet-toggle.sh #"Toggle Tablet Mode"
+      bind = $mainMod,grave,hyprexpo:expo,toggle #"Workspace Overview"
+      bind = $mainMod,F1,exec,noctalia-shell ipc call plugin:keybind-cheatsheet toggle #"Keybind Cheatsheet"
+
+      bind = $mainMod,mouse_down,workspace,e+1
+      bind = $mainMod,mouse_up,workspace,e-1
+
+      bindm = $mainMod,mouse:272,movewindow
+      bindm = $mainMod,mouse:273,resizewindow
+    '';
   };
 
   programs.hyprshot = {
