@@ -538,17 +538,39 @@
 
       -- Configure yamlls with K8S schemas
       local schemas = {
-        ["https://json.schemastore.org/kustomization.json"] = "kustomization.yaml",
+        -- Kustomization files - use glob pattern to match any path
+        ["https://json.schemastore.org/kustomization.json"] = {
+          "**/kustomization.yaml",
+          "**/kustomization.yml",
+          "**/Kustomization",
+        },
       }
 
-      -- Add all.json if it exists (includes CRDs)
+      -- Add all.json if it exists (includes CRDs from cluster)
       if vim.fn.filereadable(all_json_path) == 1 then
         schemas[all_json_path] = file_mask
-        vim.notify("K8S CRD schemas loaded from all.json", vim.log.levels.INFO)
+        vim.notify("K8S CRD schemas loaded from: " .. current_context, vim.log.levels.INFO)
       else
-        -- Fallback to basic kubernetes schema if CRDs not available
-        schemas["kubernetes"] = "/*.yaml"
-        vim.notify("K8S CRD schemas not found. Run :K8SSchemasGenerate to enable CRD validation.", vim.log.levels.INFO)
+        -- Fallback to kubernetes schema for non-kustomization yamls
+        schemas["kubernetes"] = {
+          "**/deployment*.yaml",
+          "**/service*.yaml",
+          "**/configmap*.yaml",
+          "**/secret*.yaml",
+          "**/ingress*.yaml",
+          "**/namespace*.yaml",
+          "**/pod*.yaml",
+          "**/statefulset*.yaml",
+          "**/daemonset*.yaml",
+          "**/job*.yaml",
+          "**/cronjob*.yaml",
+          "**/pvc*.yaml",
+          "**/pv*.yaml",
+          "**/role*.yaml",
+          "**/clusterrole*.yaml",
+          "**/serviceaccount*.yaml",
+        }
+        vim.notify("No CRD schemas found. Run :K8SSchemasGenerate to load schemas from cluster.", vim.log.levels.WARN)
       end
 
       vim.lsp.config.yamlls = {
