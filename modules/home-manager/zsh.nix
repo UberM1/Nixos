@@ -135,6 +135,13 @@
         cat extractPorts.tmp; rm extractPorts.tmp
       }
 
+      # RDP connection for Hyprland (detached)
+      function rdp() {
+        xfreerdp /dynamic-resolution /clipboard \
+          /sound:sys:pulse /cert:ignore /network:auto \
+          /gfx:AVC444 /fonts "$@" &>/dev/null & disown
+      }
+
       # Set 'man' colors
       function man() {
         env \

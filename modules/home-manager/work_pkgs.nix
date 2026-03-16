@@ -10,6 +10,7 @@
     pscale
     postgresql
     vault
+    sqlcmd
 
     # k8s management
     kubectl
