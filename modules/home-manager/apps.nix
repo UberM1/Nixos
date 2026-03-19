@@ -7,10 +7,16 @@
 }: {
   programs.firefox = {
     enable = true;
-    # preferences = {    Ver como hacer esto, porque asi no es jaja
-    #   "browser.translations.enable" = false;
-    #   "browser.translations.automaticallyPopup" = false;
-    # };
+    package = pkgs-unstable.firefox;
+    policies = {
+      Preferences = {
+        "security.webauthn.enable_softtoken" = false;
+      };
+    };
+  };
+
+  programs.chromium = {
+    enable = true;
   };
 
   programs.git = {

@@ -1,5 +1,6 @@
 {
   description = "NixOS configuration";
+
   inputs = {
     # nixpkgs version
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
@@ -19,10 +20,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/Hyprland/v0.53.0";
 
     hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
+      url = "github:hyprwm/hyprland-plugins/v0.53.0";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    hy3 = {
+      url = "github:outfoxxed/hy3/hl0.53.0";
       inputs.hyprland.follows = "hyprland";
     };
 

@@ -18,6 +18,7 @@
     ../../modules/home-manager/dolphin.nix
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/lutris.nix
+    ../../modules/home-manager/scripts.nix
   ];
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";
