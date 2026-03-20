@@ -41,9 +41,6 @@
       # Window close confirmation
       confirm-close-surface = true;
 
-      # Theme (Nord)
-      theme = "Nord";
-
       # Focus indicator - dim unfocused splits (like kitty's inactive border)
       unfocused-split-opacity = 0.85;
 

@@ -7,7 +7,6 @@
   system = pkgs.stdenv.hostPlatform.system;
 in {
   imports = [
-    ./cursor.nix
     ./hypridle.nix
     inputs.hyprland.homeManagerModules.default
   ];
@@ -20,18 +19,15 @@ in {
       inputs.hy3.packages.${system}.hy3
       inputs.hyprland-plugins.packages.${system}.hyprexpo
       inputs.hyprland-plugins.packages.${system}.csgo-vulkan-fix
-      # inputs.hyprland-plugins.packages.${system}.hyprscrolling  # broken upstream
     ];
 
     settings = {
-      # Monitor configuration
       monitor = [
         "DP-1,1920x1080@180,0x0,1"
         "HDMI-A-1,1920x1080@74.97,1920x0,1"
         ",preferred,auto,1"
       ];
 
-      # Environment variables
       env = [
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
@@ -42,24 +38,19 @@ in {
         "sleep 2 && noctalia-shell ipc call wallpaper random"
       ];
 
-      # General settings
       general = {
         gaps_in = 2;
         gaps_out = 3;
         border_size = 1;
-        "col.active_border" = "rgba(88c0d0ee)";
-        "col.inactive_border" = "rgba(eceff4af)";
         resize_on_border = true;
         allow_tearing = true;
         layout = "dwindle";
       };
 
-      # Cursor settings
       cursor = {
         no_hardware_cursors = 1;
       };
 
-      # Decoration settings
       decoration = {
         rounding = 3;
         active_opacity = 1.0;
@@ -67,10 +58,8 @@ in {
         dim_inactive = false;
 
         shadow = {
-          enabled = true;
           range = 4;
           render_power = 3;
-          color = "rgba(1a1a1aee)";
         };
 
         blur = {
@@ -81,7 +70,6 @@ in {
         };
       };
 
-      # Animations
       animations = {
         enabled = true;
 
@@ -113,34 +101,28 @@ in {
         ];
       };
 
-      # Dwindle layout
       dwindle = {
         pseudotile = true;
         preserve_split = true;
       };
 
-      # Master layout
       master = {
         new_status = "master";
       };
 
-      # Misc settings
       misc = {
         force_default_wallpaper = -1;
-        disable_hyprland_logo = false;
       };
 
-      # Hyprexpo plugin configuration
       plugin = {
         hyprexpo = {
           columns = 3;
           gap_size = 5;
-          bg_col = "rgb(111111)";
-          workspace_method = "center current"; # Center around current workspace
+          bg_col = "rgb(${config.lib.stylix.colors.base00})";
+          workspace_method = "center current";
         };
       };
 
-      # Input settings
       input = {
         kb_layout = "us";
         follow_mouse = 1;
@@ -151,26 +133,22 @@ in {
         };
       };
 
-      # Device configurations
       device = [
         {
           name = "epic-mouse-v1";
           sensitivity = -0.5;
         }
         {
-          name = "huion-huion-tablet_h640p";
+          name = "huion-huion-tablet_h640p-1";
           output = "DP-1";
         }
       ];
 
-      # Workspace configuration
       workspace = [
-        # Smart gaps configuration
         "w[t1],gapsout:0,gapsin:0"
         "w[tg1],gapsout:0,gapsin:0"
         "f[1],gapsout:0,gapsin:0"
 
-        # Workspace-monitor assignments
         "1,monitor:DP-1,default:true"
         "2,monitor:DP-1"
         "3,monitor:DP-1"
@@ -183,13 +161,11 @@ in {
         "10,monitor:HDMI-A-1"
       ];
 
-      # Noctalia blur on dock peek
       layerrule = [
         "blur on, match:namespace ^(noctalia-dock-peek-.*)$"
       ];
 
       windowrule = [
-        # Smart gaps window rules - non-floating windows
         "border_size 0, match:float 0, match:workspace w[t1]"
         "rounding 0, match:float 0, match:workspace w[t1]"
         "border_size 0, match:float 0, match:workspace w[tg1]"
@@ -197,7 +173,6 @@ in {
         "border_size 0, match:float 0, match:workspace f[1]"
         "rounding 0, match:float 0, match:workspace f[1]"
 
-        # Other window rules
         "no_blur on, match:class ^()$, match:title ^()$"
         "immediate on, match:class (Minecraft*)"
         "suppress_event maximize, match:class .*"

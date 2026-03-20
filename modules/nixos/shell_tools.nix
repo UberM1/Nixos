@@ -22,11 +22,13 @@
     htop
     jq
     doggo
-    btop
     resources
     alejandra
 
     fastfetch
     gimp
+    wev  # wayland event viewer - useful for finding input device codes
+    wtype  # wayland keyboard input simulator
+    libnotify  # notify-send command
   ];
 }

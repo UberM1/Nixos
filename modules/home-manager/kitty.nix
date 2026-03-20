@@ -12,16 +12,12 @@ in {
     package = lib.mkIf pkgs.stdenv.isLinux pkgs.emptyDirectory;
     settings = {
       linux_display_server = "wayland";
+      active_border_color = "#${config.lib.stylix.colors.base0D}";
+      inactive_border_color = "#${config.lib.stylix.colors.base02}";
 
-      font_family = "JetBrainsMono NF Thin";
-      bold_font = "JetBrainsMono NF Bold";
-      italic_font = "JetBrainsMono NF Thin Italic";
-      bold_italic_font = "JetBrainsMono NF Bold Italic";
-      font_size = 11;
       disable_ligatures = "always";
-      background_opacity = "0.85";
       background_blur = 20;
-      window_padding_width = "0 0 18 0";
+      window_padding_width = "0 0 18 8";  # top right bottom left
       enable_audio_bell = false;
       update_check_interval = 0;
       shell_integration = "enabled";
@@ -38,10 +34,6 @@ in {
       confirm_os_window_close = 2;
       copy_on_select = "clipboard";
       mouse_hide_wait = "3.0";
-      # Window border colors
-      active_border_color = "#88c0d0";
-      inactive_border_color = "#4c566a";
-
       # kitty-scrollback config
       allow_remote_control = "socket-only";
       listen_on = "unix:/tmp/kitty";
@@ -75,8 +67,6 @@ in {
       "ctrl+9" = "goto_tab 9";
       "ctrl+0" = "goto_tab -1";
     };
-    themeFile = "Nord";
-
     extraConfig = ''
       # kitty-scrollback.nvim Kitten alias
       action_alias kitty_scrollback_nvim kitten ${kittyScrollbackKitten}

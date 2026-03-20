@@ -17,8 +17,6 @@
       rofi-pulse-select
     ];
 
-    theme = "Arc-Dark";
-
     extraConfig = {
       modi = "drun,run,emoji,calc,filebrowser,window";
       show-icons = false;

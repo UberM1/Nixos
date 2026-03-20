@@ -8,5 +8,6 @@
     discord
     prismlauncher
     pkgs-unstable.lavat
+    gamescope
   ];
 }
