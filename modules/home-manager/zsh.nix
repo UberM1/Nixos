@@ -4,15 +4,70 @@
   lib,
   ...
 }: {
-  home.packages = with pkgs; [
-    bat
-    lsd
-  ];
+  programs.lsd = {
+    enable = true;
+    colors = {
+      user = "#${config.lib.stylix.colors.base0D}";
+      group = "#${config.lib.stylix.colors.base0E}";
+      permission = {
+        read = "#${config.lib.stylix.colors.base0B}";
+        write = "#${config.lib.stylix.colors.base09}";
+        exec = "#${config.lib.stylix.colors.base08}";
+        exec-sticky = "#${config.lib.stylix.colors.base0E}";
+        no-access = "#${config.lib.stylix.colors.base03}";
+        octal = "#${config.lib.stylix.colors.base0A}";
+        acl = "#${config.lib.stylix.colors.base0C}";
+        context = "#${config.lib.stylix.colors.base0C}";
+      };
+      date = {
+        hour-old = "#${config.lib.stylix.colors.base0B}";
+        day-old = "#${config.lib.stylix.colors.base0A}";
+        older = "#${config.lib.stylix.colors.base03}";
+      };
+      size = {
+        none = "#${config.lib.stylix.colors.base03}";
+        small = "#${config.lib.stylix.colors.base0B}";
+        medium = "#${config.lib.stylix.colors.base0A}";
+        large = "#${config.lib.stylix.colors.base09}";
+      };
+      inode = {
+        valid = "#${config.lib.stylix.colors.base0E}";
+        invalid = "#${config.lib.stylix.colors.base08}";
+      };
+      links = {
+        valid = "#${config.lib.stylix.colors.base0E}";
+        invalid = "#${config.lib.stylix.colors.base08}";
+      };
+      tree-edge = "#${config.lib.stylix.colors.base03}";
+    };
+  };
+  programs.bat.enable = true;
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+    syntaxHighlighting = {
+      enable = true;
+      styles = {
+        command = "fg=#${config.lib.stylix.colors.base0D}";
+        builtin = "fg=#${config.lib.stylix.colors.base0D}";
+        alias = "fg=#${config.lib.stylix.colors.base0C}";
+        function = "fg=#${config.lib.stylix.colors.base0D}";
+        unknown-token = "fg=#${config.lib.stylix.colors.base08}";
+        reserved-word = "fg=#${config.lib.stylix.colors.base0E}";
+        path = "fg=#${config.lib.stylix.colors.base0A},underline";
+        globbing = "fg=#${config.lib.stylix.colors.base0A}";
+        single-quoted-argument = "fg=#${config.lib.stylix.colors.base0B}";
+        double-quoted-argument = "fg=#${config.lib.stylix.colors.base0B}";
+        dollar-quoted-argument = "fg=#${config.lib.stylix.colors.base0B}";
+        back-quoted-argument = "fg=#${config.lib.stylix.colors.base0C}";
+        commandseparator = "fg=#${config.lib.stylix.colors.base09}";
+        redirection = "fg=#${config.lib.stylix.colors.base09}";
+        arg0 = "fg=#${config.lib.stylix.colors.base05}";
+        default = "fg=#${config.lib.stylix.colors.base05}";
+        comment = "fg=#${config.lib.stylix.colors.base03}";
+      };
+    };
 
     history = {
       size = 1000;
@@ -39,12 +94,6 @@
     };
 
     shellAliases = {
-      ll = "lsd -lh --group-dirs=first";
-      la = "lsd -a --group-dirs=first";
-      l = "lsd --group-dirs=first";
-      lla = "lsd -lha --group-dirs=first";
-      ls = "lsd --group-dirs=first";
-      cat = "bat";
       cupp = "python3 ~/Tools/cupp/cupp.py";
       vpnlb = "sudo sysctl net.ipv6.conf.all.disable_ipv6=0;sudo openvpn /etc/openvpn/lb.ovpn";
       vpnesco = "sudo openvpn /etc/openvpn/matiasuberti-aws.ovpn";
@@ -90,23 +139,18 @@
       PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
       PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
-      eval "$(dircolors -b)"
-
       zstyle ':completion::complete:*' gain-privileges 1
       zstyle ':completion:*' auto-description 'specify: %d'
       zstyle ':completion:*' completer _expand _complete _correct _approximate
       zstyle ':completion:*' format 'Completing %d'
       zstyle ':completion:*' group-name '''
       zstyle ':completion:*' menu select=2
-      zstyle ':completion:*:default' list-colors ''${(s.:.)LS_COLORS}
-      zstyle ':completion:*' list-colors '''
       zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
       zstyle ':completion:*' matcher-list ''' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
       zstyle ':completion:*' menu select=long
       zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
       zstyle ':completion:*' use-compctl false
       zstyle ':completion:*' verbose true
-      zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
       zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
       # rbenv initialization
@@ -142,19 +186,6 @@
           /gfx:AVC444 /fonts "$@" &>/dev/null & disown
       }
 
-      # Set 'man' colors
-      function man() {
-        env \
-        LESS_TERMCAP_mb=$'\e[01;31m' \
-        LESS_TERMCAP_md=$'\e[01;31m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[01;44;33m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[01;32m' \
-        man "$@"
-      }
-
       # Load custom functions
       if [ -f "$HOME/.zsh_functions" ]; then
         source "$HOME/.zsh_functions"
@@ -183,12 +214,12 @@
     enableZshIntegration = true;
     settings = {
       format = lib.concatStrings [
-        "[▓](#3e4552)"
+        "[▓](#${config.lib.stylix.colors.base01})"
         "$os"
         "$username"
-        "[](bg:#3b4252 fg:#3e4552)"
+        "[](bg:#${config.lib.stylix.colors.base02} fg:#${config.lib.stylix.colors.base01})"
         "$directory"
-        "[ ](fg:#3b4252)"
+        "[ ](fg:#${config.lib.stylix.colors.base02})"
       ];
 
       line_break = {
@@ -197,125 +228,125 @@
 
       username = {
         show_always = true;
-        style_user = "bg:#3e4552";
-        style_root = "bg:#9A348E";
-        format = "[   $user]($style)";
+        style_user = "bg:#${config.lib.stylix.colors.base01}";
+        style_root = "bg:#${config.lib.stylix.colors.base0E}";
+        format = "[   $user ]($style)";
         disabled = false;
       };
 
       os = {
-        style = "bg:#9A348E";
+        style = "bg:#${config.lib.stylix.colors.base0E}";
       };
 
       directory = {
-        style = "bg:#3b4252";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $path ]($style)";
       };
 
       c = {
         symbol = " ";
-        style = "bg:#4c566a";
+        style = "bg:#${config.lib.stylix.colors.base03}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       python = {
         symbol = " ";
-        style = "bg:#4c566a";
+        style = "bg:#${config.lib.stylix.colors.base03}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       docker_context = {
         symbol = " ";
-        style = "bg:#5e81ac";
+        style = "bg:#${config.lib.stylix.colors.base0D}";
         format = "[ $symbol $context ]($style) $path";
       };
 
       elixir = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       elm = {
         symbol = "  ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       git_branch = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol $branch ]($style)";
       };
 
       git_status = {
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[$all_status$ahead_behind ]($style)";
       };
 
       golang = {
         symbol = "  ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       haskell = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       java = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       julia = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       nodejs = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       nim = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       rust = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       scala = {
         symbol = " ";
-        style = "bg:#434c5e";
+        style = "bg:#${config.lib.stylix.colors.base02}";
         format = "[ $symbol ($version) ]($style)";
       };
 
       time = {
         disabled = false;
         time_format = "%R";
-        style = "bg:#6272a4";
+        style = "bg:#${config.lib.stylix.colors.base0D}";
         format = "[  $time ]($style)";
       };
 
       character = {
-        success_symbol = "[ ➜](#6272a4)";
+        success_symbol = "[ ➜](#${config.lib.stylix.colors.base0D})";
         error_symbol = "[ ➜](bold red)";
       };
 
       cmd_duration = {
         min_time = 500;
-        format = " [$duration](#6272a4)";
+        format = " [$duration](#${config.lib.stylix.colors.base0D})";
       };
     };
   };

@@ -46,6 +46,11 @@
       url = "github:noctalia-dev/noctalia-qs";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = {
@@ -67,6 +72,7 @@
             nixvim.homeModules.nixvim
             inputs.caelestia-shell.homeManagerModules.default
             inputs.noctalia.homeModules.default
+            inputs.stylix.homeModules.stylix
           ];
         }
       ];

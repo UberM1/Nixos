@@ -13,6 +13,34 @@
         "security.webauthn.enable_softtoken" = false;
       };
     };
+    profiles.default = {
+      id = 0;
+      isDefault = true;
+      settings = {
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        "sidebar.verticalTabs" = true;
+        "sidebar.revamp" = true;
+      };
+      userChrome = ''
+        /* Hide horizontal tab bar when using vertical tabs */
+        #TabsToolbar {
+          visibility: collapse !important;
+        }
+
+        /* Optional: Auto-hide sidebar, show on hover */
+        #sidebar-box {
+          min-width: 40px !important;
+          max-width: 40px !important;
+          overflow: hidden !important;
+          transition: all 0.2s ease !important;
+        }
+
+        #sidebar-box:hover {
+          min-width: 250px !important;
+          max-width: 250px !important;
+        }
+      '';
+    };
   };
 
   programs.chromium = {

@@ -5,9 +5,9 @@
   ...
 }: {
   imports = [
-    ../../modules/home-manager/hypr.nix
+    ../../modules/home-manager/stylix.nix
+    ../../modules/home-manager/hypr
     ../../modules/home-manager/hacking.nix
-    ../../modules/home-manager/cursor.nix
     ../../modules/home-manager/gaming.nix
     ../../modules/home-manager/apps.nix
     ../../modules/home-manager/kitty.nix
@@ -19,6 +19,7 @@
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/lutris.nix
     ../../modules/home-manager/scripts.nix
+    ../../modules/home-manager/shell_tools.nix
   ];
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";

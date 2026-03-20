@@ -24,9 +24,6 @@
       })
     ];
 
-    # Color scheme
-    colorschemes.nord.enable = true;
-
     # Global settings
     globals = {
       mapleader = " ";
