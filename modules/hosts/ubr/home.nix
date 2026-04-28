@@ -15,6 +15,8 @@
     ../../features/git.nix
 
     # NixOS-only home features
+    ../../features-nixos/home/stylix.nix
+    ../../features-nixos/home/kitty.nix
     ../../features-nixos/home/hypr
     ../../features-nixos/home/gaming.nix
     ../../features-nixos/home/hacking.nix
