@@ -2,30 +2,27 @@
   description = "NixOS configuration - dendritic structure";
 
   inputs = {
-    # Core
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
-    # Home manager
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Nixvim
     nixvim = {
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Hyprland ecosystem
     hyprland.url = "github:hyprwm/Hyprland/v0.53.0";
 
     hyprland-plugins = {
@@ -38,7 +35,6 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    # Shell/bar
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -54,7 +50,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    # Theming
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -67,8 +62,7 @@
 
       imports = [
         ./modules/hosts/ubr
-        # ./modules/hosts/macbook-air  # Future darwin host
-        # ./modules/hosts/server-name  # Future server
+        ./modules/hosts/macbook-air
       ];
     };
 }

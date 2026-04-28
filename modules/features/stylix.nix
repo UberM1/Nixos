@@ -42,11 +42,7 @@
         profileNames = ["default"];
       };
       kitty.enable = true;
-      rofi.enable = true;
-      gtk.enable = true;
-      hyprland.enable = true;
       nixvim.enable = true;
-      noctalia-shell.enable = true;
       starship.enable = true;
       obsidian.enable = true;
       bat.enable = true;

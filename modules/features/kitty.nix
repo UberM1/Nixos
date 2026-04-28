@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: let
   kittyScrollbackPkg = pkgs.vimPlugins.kitty-scrollback-nvim;
@@ -9,9 +8,7 @@
 in {
   programs.kitty = {
     enable = true;
-    package = lib.mkIf pkgs.stdenv.isLinux pkgs.emptyDirectory;
     settings = {
-      linux_display_server = "wayland";
       active_border_color = "#${config.lib.stylix.colors.base0D}";
       inactive_border_color = "#${config.lib.stylix.colors.base02}";
 
@@ -73,6 +70,6 @@ in {
   };
 
   # Copy custom kittens to kitty config directory
-  home.file.".config/kitty/kittens/search.py".source = ../features-nixos/home/kittens/search.py;
-  home.file.".config/kitty/kittens/scroll_mark.py".source = ../features-nixos/home/kittens/scroll_mark.py;
+  home.file.".config/kitty/kittens/search.py".source = ./kittens/search.py;
+  home.file.".config/kitty/kittens/scroll_mark.py".source = ./kittens/scroll_mark.py;
 }
