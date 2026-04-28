@@ -1,12 +1,17 @@
 {
-  description = "NixOS configuration";
+  description = "NixOS configuration - dendritic structure";
 
   inputs = {
-    # nixpkgs version
+    # Core
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-
-    # nixpkgs unstable
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Home manager
     home-manager = {
@@ -20,6 +25,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Hyprland ecosystem
     hyprland.url = "github:hyprwm/Hyprland/v0.53.0";
 
     hyprland-plugins = {
@@ -32,6 +38,7 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    # Shell/bar
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -47,35 +54,21 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Theming
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    home-manager,
-    nixvim,
-    ...
-  } @ inputs: {
-    nixosConfigurations.ubr = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;}; # Passes inputs to all modules
-      modules = [
-        ./hosts/default/configuration.nix
-        inputs.home-manager.nixosModules.default
-        {
-          home-manager.sharedModules = [
-            nixvim.homeModules.nixvim
-            inputs.caelestia-shell.homeManagerModules.default
-            inputs.noctalia.homeModules.default
-            inputs.stylix.homeModules.stylix
-          ];
-        }
+  outputs = inputs @ {flake-parts, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-darwin"];
+
+      imports = [
+        ./modules/hosts/ubr
+        # ./modules/hosts/macbook-air  # Future darwin host
+        # ./modules/hosts/server-name  # Future server
       ];
     };
-  };
 }
