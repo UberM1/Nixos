@@ -216,135 +216,139 @@
     enableZshIntegration = true;
     settings = {
       format = lib.concatStrings [
-        "[▓](#${config.lib.stylix.colors.base01})"
+        "[▓](#3e4552)"
         "$os"
         "$username"
-        "[](bg:#${config.lib.stylix.colors.base02} fg:#${config.lib.stylix.colors.base01})"
+        "[](bg:#3b4252 fg:#3e4552)"
         "$directory"
-        "[ ](fg:#${config.lib.stylix.colors.base02})"
+        "[ ](fg:#3b4252)"
       ];
 
-      line_break.disabled = false;
-
-      username = {
-        show_always = true;
-        style_user = "bg:#${config.lib.stylix.colors.base01}";
-        style_root = "bg:#${config.lib.stylix.colors.base0E}";
-        format = "[   $user ]($style)";
+      line_break = {
         disabled = false;
       };
 
-      os.style = "bg:#${config.lib.stylix.colors.base0E}";
+      username = {
+        show_always = true;
+        style_user = "bg:#3e4552";
+        style_root = "bg:#9A348E";
+        format = "[   $user]($style)";
+        disabled = false;
+      };
+
+      os = {
+        style = "bg:#9A348E";
+      };
 
       directory = {
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        style = "bg:#3b4252";
         format = "[ $path ]($style)";
       };
 
       c = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base03}";
+        symbol = " ";
+        style = "bg:#4c566a";
         format = "[ $symbol ($version) ]($style)";
       };
 
       python = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base03}";
+        symbol = " ";
+        style = "bg:#4c566a";
         format = "[ $symbol ($version) ]($style)";
       };
 
       docker_context = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base0D}";
+        symbol = " ";
+        style = "bg:#5e81ac";
         format = "[ $symbol $context ]($style) $path";
       };
 
       elixir = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       elm = {
-        symbol = "  ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = "  ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       git_branch = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol $branch ]($style)";
       };
 
       git_status = {
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        style = "bg:#434c5e";
         format = "[$all_status$ahead_behind ]($style)";
       };
 
       golang = {
-        symbol = "  ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = "  ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       haskell = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       java = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       julia = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       nodejs = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       nim = {
         symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       rust = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       scala = {
-        symbol = " ";
-        style = "bg:#${config.lib.stylix.colors.base02}";
+        symbol = " ";
+        style = "bg:#434c5e";
         format = "[ $symbol ($version) ]($style)";
       };
 
       time = {
         disabled = false;
         time_format = "%R";
-        style = "bg:#${config.lib.stylix.colors.base0D}";
+        style = "bg:#6272a4";
         format = "[  $time ]($style)";
       };
 
       character = {
-        success_symbol = "[ ➜](#${config.lib.stylix.colors.base0D})";
+        success_symbol = "[ ➜](#6272a4)";
         error_symbol = "[ ➜](bold red)";
       };
 
       cmd_duration = {
         min_time = 500;
-        format = " [$duration](#${config.lib.stylix.colors.base0D})";
+        format = " [$duration](#6272a4)";
       };
     };
   };
