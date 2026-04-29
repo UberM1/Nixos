@@ -3,7 +3,7 @@
     ../../features-darwin/system/defaults.nix
     ../../features-darwin/system/homebrew.nix
     ../../features-darwin/system/user.nix
-    ../../features-darwin/system/core-tools.nix
+    ../../features-darwin/system/nix-base.nix
     ../../features-darwin/system/kubernetes.nix
     ../../features-darwin/system/terraform.nix
     ../../features-darwin/system/databases.nix

@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./untracked.nix
-    ../../features-nixos/system/shell-tools.nix
+    ../../features-nixos/system/desktop-utils.nix
     ../../features-nixos/system/privileged.nix
     ../../features-nixos/system/dolphin.nix
     ../../features-nixos/system/hyprland.nix

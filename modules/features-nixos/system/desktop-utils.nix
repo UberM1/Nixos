@@ -8,18 +8,8 @@
 
     bluetuith
     pulsemixer
-    tree
-    fzf
     home-manager
-    curl
-    wget
-    fzf
-    ripgrep
-    htop
-    jq
-    doggo
     resources
-    alejandra
 
     fastfetch
     gimp
