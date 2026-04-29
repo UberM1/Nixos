@@ -13,8 +13,10 @@
     ../../features/shell-tools.nix
     ../../features/apps.nix
     ../../features/git.nix
+    ../../features/cli-packages.nix
 
     # NixOS-only home features
+    ../../features-nixos/home/ssh.nix
     ../../features-nixos/home/stylix.nix
     ../../features-nixos/home/kitty.nix
     ../../features-nixos/home/hypr
@@ -38,20 +40,4 @@
   home.sessionVariables = {};
 
   programs.home-manager.enable = true;
-
-  programs.ssh = {
-    enable = true;
-    enableDefaultConfig = false;
-    matchBlocks = {
-      "*" = {
-        identityFile = "~/.ssh/dssh";
-        extraOptions.AddKeysToAgent = "yes";
-      };
-      "github.com" = {
-        identityFile = "~/.ssh/dssh";
-      };
-    };
-  };
-
-  services.ssh-agent.enable = true;
 }

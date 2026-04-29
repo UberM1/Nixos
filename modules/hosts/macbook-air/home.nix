@@ -12,11 +12,12 @@
     ../../features/shell-tools.nix
     ../../features/apps.nix
     ../../features/git.nix
+    ../../features/cli-packages.nix
 
     # Darwin-only home features
     ../../features-darwin/home/aerospace.nix
     ../../features-darwin/home/sketchybar.nix
-    ../../features-darwin/home/core-tools.nix
+    ../../features-darwin/home/cli-packages.nix
     ../../features-darwin/home/ruby.nix
   ];
 
