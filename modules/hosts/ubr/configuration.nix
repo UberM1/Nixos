@@ -15,6 +15,8 @@
 
   # DDC/CI for monitor brightness control
   boot.kernelModules = ["i2c-dev"];
+  boot.blacklistedKernelModules = ["algif_aead"];
+
   hardware.i2c.enable = true;
 
   networking = {
