@@ -16,6 +16,7 @@
     ../../features/cli-packages.nix
 
     # NixOS-only home features
+    ../../features-nixos/home/apps.nix
     ../../features-nixos/home/ssh.nix
     ../../features-nixos/home/stylix.nix
     ../../features-nixos/home/kitty.nix

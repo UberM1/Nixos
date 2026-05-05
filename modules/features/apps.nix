@@ -41,8 +41,6 @@
     };
   };
 
-  programs.chromium.enable = true;
-
   home.packages = with pkgs; [
     pkgs-unstable.obsidian
     claude-code

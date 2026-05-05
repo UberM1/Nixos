@@ -28,6 +28,12 @@ in {
             inputs.stylix.homeModules.stylix
             {
               nixpkgs.config.allowUnfree = true;
+              nixpkgs.overlays = [
+                (final: prev: {
+                  # direnv fish tests get SIGKILL'd by macOS sandbox when building from source
+                  direnv = prev.direnv.overrideAttrs (_: {doCheck = false;});
+                })
+              ];
             }
           ];
         };
