@@ -5,6 +5,6 @@
     kubeseal
     kustomize
     kubernetes-helm
-    vault
+    # vault
   ];
 }
