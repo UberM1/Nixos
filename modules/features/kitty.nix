@@ -26,7 +26,7 @@ in {
 
       scrollback_lines = 10000;
       confirm_os_window_close = 2;
-      copy_on_select = "clipboard";
+      copy_on_select = "no";
       mouse_hide_wait = "3.0";
       allow_remote_control = "socket-only";
       listen_on = "unix:/tmp/kitty";
