@@ -34,6 +34,7 @@ in {
       ];
 
       exec-once = [
+        "hypridle"
         "noctalia-shell"
         "sleep 2 && noctalia-shell ipc call wallpaper random"
       ];
