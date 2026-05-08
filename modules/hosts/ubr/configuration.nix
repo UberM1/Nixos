@@ -8,15 +8,20 @@
     ../../features-nixos/system/nvidia.nix
   ];
 
-  # Bootloader
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/nvme0n1";
-  boot.loader.grub.useOSProber = false;
+  boot = {
+    # Bootloader
+    loader.timeout = 1;
+    loader.grub.enable = true;
+    loader.grub.device = "/dev/nvme0n1";
+    loader.grub.useOSProber = false;
+    loader.grub.configurationLimit = 5;
+    loader.efi.canTouchEfiVariables = true;
 
-  # DDC/CI for monitor brightness control
-  boot.kernelModules = ["i2c-dev"];
-  boot.blacklistedKernelModules = ["algif_aead"];
-
+    # DDC/CI for monitor brightness control
+    kernelModules = ["i2c-dev"];
+    kernelParams = ["quiet" "loglevel=3"];
+    blacklistedKernelModules = ["algif_aead"];
+  };
   hardware.i2c.enable = true;
 
   networking = {
@@ -50,6 +55,12 @@
 
   services.blueman.enable = true;
 
+  # Storage nvme optimization
+  services.fstrim.enable = true;
+
+  # Zram swap
+  zramSwap.enable = true;
+
   # User
   users.users.ubr = {
     isNormalUser = true;
@@ -60,7 +71,6 @@
 
   # System packages
   environment.systemPackages = with pkgs; [
-    kitty
     vim
     git
     ddcutil
@@ -117,10 +127,18 @@
 
   system.stateVersion = "25.11";
 
-  nix.settings = {
-    experimental-features = ["nix-command" "flakes"];
-    warn-dirty = false;
-    auto-optimise-store = true;
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      warn-dirty = false;
+      auto-optimise-store = true;
+    };
   };
 
   nixpkgs.config.allowUnfree = true;

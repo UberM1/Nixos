@@ -11,5 +11,6 @@
     fd
     coreutils
     alejandra
+    fastfetch
   ];
 }

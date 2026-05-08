@@ -8,11 +8,7 @@
 
     bluetuith
     pulsemixer
-    home-manager
-    resources
 
-    fastfetch
-    gimp
     wev
     wtype
     libnotify
