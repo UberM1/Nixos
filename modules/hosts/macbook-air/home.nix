@@ -11,6 +11,7 @@
     ../../features/kitty.nix
     ../../features/shell-tools.nix
     ../../features/apps.nix
+    ../../features/claude.nix
     ../../features/git.nix
     ../../features/cli-packages.nix
 
