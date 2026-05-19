@@ -85,7 +85,7 @@
       DOCKER_HOST = "unix://$HOME/.colima/docker.sock";
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = "/var/run/docker.sock";
       DISABLE_SPRING = "true";
-      KUBECONFIG = "$HOME/.kube/work-htz-stage.yaml:$HOME/.kube/work-htz-tools.yaml:$HOME/.kube/work-htz-prod.yaml";
+      KUBECONFIG = "$HOME/.kube/work-htz-stage.yaml:$HOME/.kube/work-htz-tools.yaml:$HOME/.kube/work-htz-prod.yaml:$HOME/.kube/work-htz-prod-usa.yaml";
       TERM = "xterm-kitty";
       RUBY_CONFIGURE_OPTS = "--with-openssl-dir=/opt/homebrew/opt/openssl@3 --with-readline-dir=/opt/homebrew/opt/readline --with-libyaml-dir=/opt/homebrew/opt/libyaml";
       EDITOR = "nvim";
