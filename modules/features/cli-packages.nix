@@ -12,5 +12,6 @@
     coreutils
     alejandra
     fastfetch
+    hcloud
   ];
 }

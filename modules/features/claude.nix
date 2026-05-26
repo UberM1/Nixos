@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, config, ...}: {
   home.packages = [
     pkgs.claude-code
   ];
@@ -21,4 +21,7 @@
     - Auto-suspend for security warnings, irreversible actions, user confusion — resume after clarity restored
     - Code/commits/PRs written in normal style
   '';
+
+  # Claude skills - symlink to nixos_conf/skills (out-of-store, editable)
+  home.file.".claude/skills".source = config.lib.file.mkOutOfStoreSymlink "/home/ubr/nixos_conf/skills";
 }
