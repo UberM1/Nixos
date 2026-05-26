@@ -8,7 +8,7 @@
     # Cross-platform features
     ../../features/stylix.nix
     ../../features/zsh.nix
-    ../../features/nvim.nix
+    ../../features/nvim
     ../../features/kitty.nix
     ../../features/shell-tools.nix
     ../../features/apps.nix

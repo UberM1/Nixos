@@ -4,5 +4,6 @@
   home.packages = with pkgs; [
     gimp
     resources
+    onlyoffice-desktopeditors
   ];
 }
