@@ -34,6 +34,8 @@
           end, {expr=true, buffer=bufnr, desc="Previous git hunk"})
 
           -- Actions
+          vim.keymap.set('n', '<leader>hp', gs.preview_hunk, {buffer=bufnr, desc="Preview hunk"})
+          vim.keymap.set('n', '<leader>hr', gs.reset_hunk, {buffer=bufnr, desc="Reset hunk"})
         end
       '';
     };
