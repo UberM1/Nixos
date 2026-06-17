@@ -4,7 +4,8 @@
   ...
 }: {
   home.packages = with pkgs; [
-    discord
+    # discord
+    vesktop
     prismlauncher
     pkgs-unstable.lavat
     gamescope

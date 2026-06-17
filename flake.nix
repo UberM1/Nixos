@@ -41,18 +41,20 @@
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
+      # Pinned to pre-v5 version - v5 has breaking API changes
+      url = "github:noctalia-dev/noctalia-shell/e08b08893e2194c0f6dc172f858e788ba825904d";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     noctalia-qs = {
-      url = "github:noctalia-dev/noctalia-qs";
+      # Pinned to match noctalia pre-v5
+      url = "github:noctalia-dev/noctalia-qs/c918c3eb74f9fb9ef88ddd4649bbfd9a39f93af1";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     stylix = {
-      url = "github:danth/stylix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:danth/stylix/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

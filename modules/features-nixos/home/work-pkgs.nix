@@ -8,6 +8,7 @@
     sqlcmd
 
     terraform
+    python3
 
     # k8s management
     kubectl
