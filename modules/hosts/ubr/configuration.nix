@@ -130,6 +130,7 @@
   };
 
   programs.zsh.enable = true;
+  services.udev.packages = [pkgs.qFlipper];
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
@@ -146,7 +147,7 @@
     powerOnBoot = true;
   };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
   nix = {
     gc = {

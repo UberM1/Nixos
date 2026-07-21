@@ -2,14 +2,12 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "*" = {
-        identityFile = "~/.ssh/dssh";
-        extraOptions.AddKeysToAgent = "yes";
+        AddKeysToAgent = "yes";
+        IdentityFile = "~/.ssh/dssh";
       };
-      "github.com" = {
-        identityFile = "~/.ssh/dssh";
-      };
+      "github.com".IdentityFile = "~/.ssh/dssh";
     };
   };
 
