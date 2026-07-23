@@ -43,5 +43,6 @@
 
   home.packages = with pkgs; [
     pkgs-unstable.obsidian
+    pkgs-unstable.bruno
   ];
 }

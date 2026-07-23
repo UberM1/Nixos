@@ -54,6 +54,8 @@
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
   };
 
   outputs = inputs @ {flake-parts, ...}:

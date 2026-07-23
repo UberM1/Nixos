@@ -14,6 +14,7 @@
     ../../features/claude.nix
     ../../features/git.nix
     ../../features/cli-packages.nix
+    ../../features/work-pkgs.nix
 
     # Darwin-only home features
     ../../features-darwin/home/aerospace.nix

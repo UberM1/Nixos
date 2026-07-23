@@ -14,6 +14,7 @@ in {
     specialArgs = {inherit inputs;};
     modules = [
       ./configuration.nix
+      inputs.determinate.darwinModules.default
       inputs.home-manager.darwinModules.home-manager
       inputs.stylix.darwinModules.stylix
       {

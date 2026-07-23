@@ -4,5 +4,6 @@
     redis
     sqlite
     libmysqlclient
+    mysql80
   ];
 }
