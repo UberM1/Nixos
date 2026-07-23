@@ -13,6 +13,7 @@
     rar2hashcat
     _7z2hashcat
     zip2hashcat
+    qFlipper
 
     sqlmap
 

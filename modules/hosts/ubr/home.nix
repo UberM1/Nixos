@@ -31,12 +31,12 @@
     ../../features-nixos/home/dolphin.nix
     ../../features-nixos/home/lutris.nix
     ../../features-nixos/home/scripts.nix
-    ../../features-nixos/home/bars/noctalia-shell.nix
+    ../../features-nixos/home/bars/noctalia.nix
   ];
 
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 
   home.packages = [];
   home.file = {};
