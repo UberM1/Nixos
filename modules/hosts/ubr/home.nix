@@ -14,6 +14,7 @@
     ../../features/apps.nix
     ../../features/git.nix
     ../../features/cli-packages.nix
+    ../../features/work-pkgs.nix
     ../../features/claude.nix
 
     # NixOS-only home features

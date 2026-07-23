@@ -1,6 +1,7 @@
 {pkgs, config, ...}: {
   home.packages = [
     pkgs.claude-code
+    pkgs.mcp-nixos
   ];
 
   home.file.".claude/CLAUDE.md".text = ''

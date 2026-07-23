@@ -87,7 +87,7 @@
       DISABLE_SPRING = "true";
       KUBECONFIG = "$HOME/.kube/letsbit-htz-stage.yaml:$HOME/.kube/letsbit-htz-tools.yaml:$HOME/.kube/letsbit-htz-prod.yaml:$HOME/.kube/letsbit-htz-prod-usa.yaml";
       TERM = "xterm-kitty";
-      RUBY_CONFIGURE_OPTS = "--with-openssl-dir=/opt/homebrew/opt/openssl@3 --with-readline-dir=/opt/homebrew/opt/readline --with-libyaml-dir=/opt/homebrew/opt/libyaml";
+      RUBY_CONFIGURE_OPTS = "--with-openssl-dir=${pkgs.openssl_3.dev} --with-readline-dir=${pkgs.readline} --with-libyaml-dir=${pkgs.libyaml}";
       EDITOR = "nvim";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       GEM_HOME = "$HOME/.local/share/gem/ruby/3.3.0";
@@ -133,8 +133,7 @@
       path=(~/perl5/bin $path)
       export PATH
 
-      export FREEDESKTOP_MIME_TYPES_PATH=/opt/homebrew/share/mime/packages/freedesktop.org.xml
-      export PATH="/opt/homebrew/opt/mysql-client@8.0/bin:$PATH"
+      export FREEDESKTOP_MIME_TYPES_PATH=${pkgs.shared-mime-info}/share/mime/packages/freedesktop.org.xml
 
       PERL5LIB="$HOME/perl5/lib/perl5''${PERL5LIB:+:''${PERL5LIB}}"; export PERL5LIB;
       PERL_LOCAL_LIB_ROOT="$HOME/perl5''${PERL_LOCAL_LIB_ROOT:+:''${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
