@@ -89,6 +89,11 @@
   xdg = {
     portal.enable = true;
     portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    portal.config.common = {
+      default = ["hyprland" "gtk"];
+      "org.freedesktop.impl.portal.ScreenCast" = ["hyprland"];
+      "org.freedesktop.impl.portal.Screenshot" = ["hyprland"];
+    };
     mime.enable = true;
     menus.enable = true;
   };
@@ -106,9 +111,26 @@
     pulse.enable = true;
     jack.enable = true;
     wireplumber.enable = true;
+    extraConfig.pipewire."91-virtual-sink" = {
+      "context.objects" = [
+        {
+          factory = "adapter";
+          args = {
+            "factory.name" = "support.null-audio-sink";
+            "node.name" = "VirtualSink";
+            "node.description" = "Virtual Sink (Discord share)";
+            "media.class" = "Audio/Sink";
+            "audio.position" = "FL,FR";
+            "monitor.channel-volumes" = true;
+            "monitor.passthrough" = true;
+          };
+        }
+      ];
+    };
   };
 
   programs.zsh.enable = true;
+  services.udev.packages = [pkgs.qFlipper];
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
@@ -125,7 +147,7 @@
     powerOnBoot = true;
   };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
   nix = {
     gc = {

@@ -14,10 +14,11 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
+    configType = "hyprlang";
     package = inputs.hyprland.packages.${system}.hyprland;
     plugins = [
       inputs.hy3.packages.${system}.hy3
-      inputs.hyprland-plugins.packages.${system}.hyprexpo
+      # inputs.scrolloverview.packages.${system}.scrolloverview  # broken on 0.55, re-enable when patched
       inputs.hyprland-plugins.packages.${system}.csgo-vulkan-fix
     ];
 
@@ -35,8 +36,7 @@ in {
 
       exec-once = [
         "hypridle"
-        "noctalia-shell"
-        "sleep 2 && noctalia-shell ipc call wallpaper random"
+        "noctalia"
       ];
 
       general = {
@@ -103,7 +103,6 @@ in {
       };
 
       dwindle = {
-        pseudotile = true;
         preserve_split = true;
       };
 
@@ -115,14 +114,7 @@ in {
         force_default_wallpaper = -1;
       };
 
-      plugin = {
-        hyprexpo = {
-          columns = 3;
-          gap_size = 5;
-          bg_col = "rgb(${config.lib.stylix.colors.base00})";
-          workspace_method = "center current";
-        };
-      };
+      # plugin.scrolloverview disabled until plugin builds on 0.55
 
       input = {
         kb_layout = "us";
@@ -205,14 +197,14 @@ in {
       # 1. APPLICATIONS
       bind = CTRL ALT,T,exec,$terminal #"Terminal"
       bind = $mainMod,E,exec,$fileManager #"File Manager"
-      bind = $mainMod,Space,exec,noctalia-shell ipc call launcher toggle #"App Launcher"
+      bind = $mainMod,Space,exec,noctalia msg panel-toggle launcher #"App Launcher"
 
       # 2. WINDOW MANAGEMENT
       bind = $mainMod,Q,killactive, #"Close Window"
       bind = $mainMod,V,togglefloating, #"Toggle Floating"
       bind = $mainMod,P,pseudo, #"Pseudo Tile"
-      bind = $mainMod SHIFT_L,D,togglesplit, #"Toggle Split"
-      bind = $mainMod,D,swapsplit, #"Swap Split"
+      bind = $mainMod SHIFT_L,D,layoutmsg,togglesplit #"Toggle Split"
+      bind = $mainMod,D,layoutmsg,swapsplit #"Swap Split"
       bind = $mainMod,F,fullscreen #"Fullscreen"
 
       # 3. FOCUS
@@ -256,10 +248,9 @@ in {
 
       # 8. SYSTEM
       bind = $mainMod,M,exit, #"Exit Hyprland"
-      bind = $mainMod,Escape,exec,noctalia-shell ipc call lockScreen lock #"Lock Screen"
+      bind = $mainMod,Escape,exec,noctalia msg session lock #"Lock Screen"
       bind = $mainMod,T,exec,/home/ubr/scripts/tablet-toggle.sh #"Toggle Tablet Mode"
-      bind = $mainMod,grave,hyprexpo:expo,toggle #"Workspace Overview"
-      bind = $mainMod,F1,exec,noctalia-shell ipc call plugin:keybind-cheatsheet toggle #"Keybind Cheatsheet"
+      # bind = $mainMod,grave,scrolloverview:overview,toggle #"Workspace Overview"
 
       bind = $mainMod,mouse_down,workspace,e+1
       bind = $mainMod,mouse_up,workspace,e-1

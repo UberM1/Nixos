@@ -29,7 +29,7 @@
       defaults = {
         file_ignore_patterns = [
           "node_modules"
-          ".git"
+          "%.git/"
           "dist"
           "build"
           "target"

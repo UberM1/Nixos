@@ -4,5 +4,6 @@
     postgresql
     vault
     sqlcmd
+    python3
   ];
 }

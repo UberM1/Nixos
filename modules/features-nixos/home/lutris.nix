@@ -5,7 +5,6 @@
     defaultWinePackage = pkgs-unstable.wineWow64Packages.stagingFull;
     extraPackages = with pkgs-unstable; [
       winetricks
-      fuseiso
       xrandr
     ];
 
