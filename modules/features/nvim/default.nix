@@ -16,6 +16,7 @@ in {
 
   programs.nixvim = {
     enable = true;
+    nixpkgs.source = pkgs.path;
 
     # Extra plugins not available in nixvim
     extraPlugins = with pkgs.vimPlugins; [
