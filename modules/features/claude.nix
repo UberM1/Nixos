@@ -1,6 +1,6 @@
-{pkgs, config, ...}: {
+{pkgs, pkgs-unstable, config, ...}: {
   home.packages = [
-    pkgs.claude-code
+    pkgs-unstable.claude-code
     pkgs.mcp-nixos
   ];
 
