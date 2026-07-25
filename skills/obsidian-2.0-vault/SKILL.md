@@ -1,233 +1,106 @@
 ---
 name: obsidian-2.0-vault
-description: "Vault-specific patterns for ~/Obsidian-2.0: flashcards, metadata, structure"
+description: "How to work with the ~/Obsidian-2.0 vault: searching content, linking notes, creating/editing via obsidian-cli or direct file edits, templates, flashcards. Formatting and structure rules live in the vault's CLAUDE.md — this skill covers the mechanics."
 ---
 
-# Obsidian-2.0 Vault Patterns
+# Obsidian-2.0 Vault — mechanics
 
-This skill provides patterns specific to the user's Obsidian vault at `~/Obsidian-2.0`.
+Vault path: `~/Obsidian-2.0`.
 
-## Vault Structure
+**Before writing any note, read `~/Obsidian-2.0/CLAUDE.md`.** It owns formatting, folder taxonomy, frontmatter tiers, tags, note division, and the Cornell rule for theory notes. This matters especially when working from a session *outside* the vault directory (e.g. a NixOS config repo), where that CLAUDE.md is not auto-loaded — skipping it produces wrongly classified, wrongly tagged notes.
 
+## Two ways to operate — when to use which
+
+### Direct file edits (Read/Write/Edit/Grep on `~/Obsidian-2.0`)
+
+Always available, no dependencies. Prefer for:
+- Creating or rewriting whole notes
+- Bulk/multi-file edits and refactors
+- When Obsidian desktop may not be running
+
+Obsidian picks up external file changes automatically; no reload needed.
+
+### `obsidian-cli` (official CLI, v1.12+)
+
+Talks to the **running** Obsidian desktop app via IPC — if Obsidian is closed, commands fail; fall back to direct file edits. Full command reference: invoke the `obsidian-cli` skill.
+
+> [!warning] The binary is `obsidian-cli`. `obs` is OBS Studio — not Obsidian. Don't confuse them.
+
+Prefer the CLI for what the app's index does better than grep:
+
+```bash
+obsidian-cli search query="wrapper" path="LCC"   # full-text search with Obsidian's index
+obsidian-cli backlinks file="nix"                # who links TO this note
+obsidian-cli links file="nix"                    # outgoing links
+obsidian-cli unresolved                          # wikilinks pointing nowhere (TODO list)
+obsidian-cli orphans                             # notes nothing links to
+obsidian-cli properties path="LCC/Linux/nix.md"  # read frontmatter
+obsidian-cli property:set path="..." name="status" value="active"
+obsidian-cli templates                           # list available templates
+obsidian-cli daily:append content="- note"       # today's daily note
 ```
-~/Obsidian-2.0/
-├── LB/                    # Work/infrastructure (Kubernetes, Vault, incidents)
-├── LCC/                   # University coursework (IA, SO, Redes, etc.)
-├── General/               # Personal (Home Lab, Journal, Routines)
-│   └── Journal/
-│       ├── 01 Daily/      # Daily notes (YYYY-MM-DD.md)
-│       └── 02 Weekly/     # Weekly notes (YYYY-Www.md)
-├── DnD/                   # D&D campaign materials
-├── BJJ/                   # Jiu-Jitsu training notes
-├── Templates/             # Note templates
-├── Attachments/           # Media files
-├── Excalidraw/            # Diagrams
-└── Documentos/            # PDFs
-```
 
-## Flashcard Creation
+## Searching the vault — decision guide
 
-Uses Spaced Repetition plugin (obsidian-spaced-repetition).
+| Need | Tool |
+|---|---|
+| Exact string / regex / code fragment | `Grep` on `~/Obsidian-2.0` |
+| Find note by name | `Glob` pattern or `obsidian-cli file name="..."` |
+| Full-text fuzzy search | `obsidian-cli search query="..."` |
+| Graph questions (backlinks, orphans, broken links) | `obsidian-cli backlinks/orphans/unresolved` |
+| "Does a note on X already exist?" | Both: Glob by name + Grep by keyword — **always check before creating** (editing an existing note beats creating a duplicate) |
 
-### Required Tag
-All flashcard notes MUST include `#flashcards` or `#flashcards/topic` tag.
+## Linking — how and when
 
-### Card Formats
-
-**Multiline Q&A (preferred):**
+Syntax:
 ```markdown
-Question text here #alta
+[[Nota]]                    link
+[[Nota|texto visible]]      custom display
+[[Nota#Sección]]            heading link
+![[Nota]]                   embed (transclusion)
+![[imagen.png|400]]         image embed with width
+```
+
+When to link:
+- **First mention** of a concept that has (or deserves) its own note — not every repetition.
+- The `Notas relacionadas: [[X]] · [[Y]]` line near the top of every technical note (required by CLAUDE.md).
+- Academic cross-links per the CLAUDE.md table (MVCC → [[Teoria de Bases de Datos]], scheduling → [[Sistemas Operativos]], etc.).
+- A wikilink to a nonexistent note is a valid TODO **only** if it's a topic the user would plausibly write. Don't scatter dead links to things that will never get a note. Check with `obsidian-cli unresolved` when in doubt.
+- Internal = wikilinks, external URLs = markdown links. Never markdown-link to a vault note.
+
+## Templates
+
+Live in `Templates/`, use Templater syntax (`<% tp.file.title %>`, `<% tp.date.now("YYYY-MM-DD") %>`). Available:
+- `Cornell Note Template.md` — **only when the user explicitly asks for a Cornell note**, never by default. No frontmatter. Order: Notas → Cues → Resumen. Claude fills only `## Notas`; Cues and Resumen stay empty (guide comments included) for the user to fill while studying.
+- `Infra Component Template.md` — LB/ infra notes
+- `Daily Note Template.md`, `Weekly Note Template.md`, `JJ Note Template.md` — auto-generated types
+
+When creating a note of a templated type, follow the template's structure (copy it and fill), or `obsidian-cli create path="..." template="..."` if Obsidian is running. Templater placeholders only render when the note is created through Obsidian — with direct file writes, substitute the values yourself (never leave raw `<% %>` in a note).
+
+## Flashcards (Spaced Repetition plugin)
+
+Notes with cards need `#flashcards` or `#flashcards/topic` tag. Formats:
+
+```markdown
+Pregunta #alta
 ?
-Answer text here. Can include:
-- Bullet points
-- **Bold text**
-- `code blocks`
-- $$LaTeX formulas$$
+Respuesta multilínea, admite listas, `código`, $$LaTeX$$.
+
+Pregunta::Respuesta            (una línea)
+Pregunta:::Respuesta           (reversible, 2 cards)
+La ==respuesta== oculta.       (cloze)
 ```
 
-**Single line:**
-```markdown
-Question::Answer
-Question:::Answer  (reversed, creates 2 cards)
-```
+- `---` separa cards; agrupar por `## Heading`.
+- Prioridad: `#alta`, `#media`.
 
-**Cloze deletion:**
-```markdown
-The ==answer== is hidden during review.
-```
+## Special note types (auto-generated, don't restructure)
 
-### Priority Tags
-- `#alta` - High priority, review more often
-- `#media` - Medium priority
+- **Daily**: `General/Journal/01 Daily/YYYY-MM-DD.md` — append via `obsidian-cli daily:append`; don't touch the dataviewjs blocks.
+- **Weekly**: `General/Journal/02 Weekly/YYYY-Www.md`.
+- **BJJ**: `BJJ/`, frontmatter per its template (`profesor`, `tipo_clase`, `enfoque`, `dificultad`).
+- **Attachments**: media goes in `Attachments/`, embed with `![[archivo]]`.
 
-### Card Structure
-- Use `---` (horizontal rule) to separate individual cards
-- Group by topic using `## Headings`
-- Example file structure:
+## Dataview
 
-```markdown
-# Flashcards: Topic Name
-#flashcards/topic
-
----
-
-## Section 1
-
-Question 1 #alta
-?
-Answer 1
-
----
-
-Question 2 #media
-?
-Answer 2
-
----
-```
-
-### Formulas in Cards
-Use LaTeX for math:
-```markdown
-What is the Shannon theorem? #alta
-?
-$$C = B \log_2(1 + S/N) \text{ bits/seg}$$
-- B: bandwidth
-- S/N: signal-to-noise ratio
-```
-
-## Source Metadata
-
-When creating notes from external sources (web, books, papers), include frontmatter with sources as a list:
-
-```yaml
----
-sources:
-  - "https://example.com/article"
-  - "Book Title by Author"
-  - "[[Internal Note]]"
-tags:
-  - type/source
-  - topic/relevant-topic
----
-```
-
-### For Web Clippings
-```yaml
----
-sources:
-  - "https://example.com/article"
-  - "https://another-source.com/page"
-date_published: YYYY-MM-DD
-date_accessed: YYYY-MM-DD
-tags:
-  - type/clipping
----
-```
-
-## Tag Conventions
-
-Use `type/*` prefix for categorization:
-- `type/daily-note` - Journal entries
-- `type/weekly-note` - Weekly reviews
-- `type/jiujitsu-class` - BJJ training
-- `type/source` - External source notes
-- `type/clipping` - Web clippings
-- `type/flashcards` - Flashcard decks
-- `type/infra-component` - Infrastructure software (ArgoCD, Vault, Falco, etc.)
-
-## Infrastructure Component Notes
-
-For DevOps/infrastructure software documentation. Template at `Templates/Infra Component Template.md`.
-
-Frontmatter:
-```yaml
----
-component: "component-name"
-category: "security" | "gitops" | "networking" | "observability" | "storage" | "runtime"
-tags:
-  - type/infra-component
-docs:
-  - "https://official-docs.example.com"
-sources:
-  - "https://tutorial-or-reference.com"
----
-```
-
-Structure includes:
-- Overview table (version, namespace, helm chart, port)
-- Installation (prerequisites, helm install, values)
-- Configuration (env vars, secrets path)
-- Operations (health, logs, restart, port-forward commands)
-- Troubleshooting (issue/symptoms/cause/fix format)
-- Backup/Restore
-- Upgrade procedure
-- Changelog
-
-Place infra component notes in `LB/` folder.
-
-## BJJ Note Structure
-
-For Jiu-Jitsu training notes, use frontmatter:
-```yaml
----
-date: YYYY-MM-DD
-tags:
-  - type/jiujitsu-class
-profesor: "Name"
-tipo_clase: "gi" | "no-gi"
-enfoque: "guardia" | "pase" | "takedown" | "submission"
-dificultad: "basico" | "intermedio" | "avanzado"
----
-
-## Que vimos
-- **Tecnica:** Name
-- **Posicion:** Starting position
-- **Objetivo:** Goal
-- **Pasos:**
-  1. Step 1
-  2. Step 2
-- **Observaciones:** Notes
-
-## Sparring
-- Notes from rolling
-
-## Observaciones personales
-- Personal insights
-```
-
-## Daily Notes
-
-Auto-generated in `General/Journal/01 Daily/` with format `YYYY-MM-DD.md`.
-
-Key frontmatter fields:
-```yaml
----
-date: YYYY-MM-DD
-tags:
-  - type/daily-note
-journal-date: <% tp.file.title %>
-log-sleep-hours:
-log-healthy-eating:
----
-```
-
-## File Operations
-
-Vault path: `~/Obsidian-2.0`
-
-When creating/editing files:
-- Use wikilinks `[[Note Name]]` for internal links
-- Use markdown links `[text](url)` only for external URLs
-- Attachments go in `Attachments/` folder
-
-## Dataview Usage
-
-The vault uses Dataview for dynamic queries. Common patterns:
-```dataview
-LIST FROM #type/daily-note WHERE date >= date(today) - dur(7 days)
-```
-
-```dataviewjs
-dv.table(["File", "Date"], dv.pages("#flashcards").map(p => [p.file.link, p.date]))
-```
+The vault uses Dataview; existing query blocks in notes are load-bearing — preserve them when editing. Reading a note via `obsidian-cli read` shows the raw query, not results; that's expected.
