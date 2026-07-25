@@ -1,6 +1,22 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  # Bake the env into the binary so Dolphin is themed and finds apps no
+  # matter how it's launched (terminal, rofi, noctalia, xdg-open):
+  # - QT_QPA_PLATFORMTHEME=kde -> plasma-integration reads kdeglobals colors
+  # - kbuildsycoca6 keeps the "Open with" application cache fresh
+  dolphin-wrapped = pkgs.symlinkJoin {
+    name = "dolphin-wrapped";
+    paths = [pkgs.kdePackages.dolphin];
+    nativeBuildInputs = [pkgs.makeWrapper];
+    postBuild = ''
+      wrapProgram $out/bin/dolphin \
+        --set QT_QPA_PLATFORMTHEME kde \
+        --set QT_STYLE_OVERRIDE breeze \
+        --run "${pkgs.kdePackages.kservice}/bin/kbuildsycoca6 >/dev/null 2>&1 || true"
+    '';
+  };
+in {
   environment.systemPackages = with pkgs; [
-    kdePackages.dolphin
+    dolphin-wrapped
     kdePackages.kio
     kdePackages.kdf
     kdePackages.kio-fuse
@@ -34,4 +50,7 @@
   environment.sessionVariables = {
     TERMINAL = "kitty";
   };
+
+  environment.etc."xdg/menus/applications.menu".source =
+    "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
 }

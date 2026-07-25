@@ -32,6 +32,9 @@ in {
       env = [
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
+        # Make KDE apps (Dolphin) read kdeglobals for colors
+        "QT_QPA_PLATFORMTHEME,kde"
+        "QT_STYLE_OVERRIDE,breeze"
       ];
 
       exec-once = [
