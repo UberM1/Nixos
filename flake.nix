@@ -16,6 +16,12 @@
     # would change what gets built.
     nixarr.url = "github:nix-media-server/nixarr/476ffae2a09911008847dd5a86c18b8cb484d198";
 
+    # GitOps auto-deploy for the bastion server. Not in nixpkgs.
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs-bastion";
+    };
+
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nix-darwin = {
