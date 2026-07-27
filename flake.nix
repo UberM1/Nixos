@@ -6,6 +6,16 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # Pinned to the exact rev the bastion server was already running when it was
+    # migrated out of its own nested flake, so the migration changed nothing.
+    # Bump deliberately -- it rebuilds and restarts the entire media stack.
+    nixpkgs-bastion.url = "github:NixOS/nixpkgs/549bd84d6279f9852cae6225e372cc67fb91a4c1";
+
+    # Deliberately not following nixpkgs-bastion: the nested flake this was
+    # migrated from let nixarr use its own pinned nixpkgs, and a follows here
+    # would change what gets built.
+    nixarr.url = "github:nix-media-server/nixarr/476ffae2a09911008847dd5a86c18b8cb484d198";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nix-darwin = {
@@ -59,6 +69,7 @@
       imports = [
         ./modules/hosts/ubr
         ./modules/hosts/macbook-air
+        ./modules/hosts/bastion
       ];
     };
 }

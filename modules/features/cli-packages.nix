@@ -13,5 +13,7 @@
     alejandra
     fastfetch
     hcloud
+    gh
+    glab
   ];
 }

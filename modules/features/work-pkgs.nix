@@ -6,6 +6,7 @@
     kubectl-cnpg
     kubeseal
     kustomize
+    kubent
     kubernetes-helm
   ];
 }
