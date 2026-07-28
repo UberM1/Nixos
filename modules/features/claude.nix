@@ -1,28 +1,43 @@
-{pkgs, pkgs-unstable, config, ...}: {
-  home.packages = [
-    pkgs-unstable.claude-code
-    pkgs.mcp-nixos
-  ];
+{
+  pkgs,
+  pkgs-unstable,
+  config,
+  lib,
+  ...
+}: {
+  options.claude.skillsRepoPath = lib.mkOption {
+    type = lib.types.str;
+    description = "Absolute path to this repo's skills/ dir on the host, symlinked to ~/.claude/skills";
+  };
 
-  home.file.".claude/CLAUDE.md".text = ''
-    # Caveman Mode
+  config = {
+    home.packages = [
+      pkgs-unstable.claude-code
+      pkgs.mcp-nixos
+    ];
 
-    **Core Rules:**
-    - Eliminate articles (a/an/the), filler words (just/really/basically), pleasantries, hedging
-    - Keep fragments, technical terms precise, code untouched
-    - Structure: [thing] [action] [reason]. [next step].
-    - Avoid: "Sure! I'd be happy to help you with that."
-    - Prefer: "Bug in auth middleware. Fix:"
+    home.file.".claude/CLAUDE.md".text = ''
+      # Caveman Mode
 
-    **Controls:**
-    - Switch intensity: `/caveman lite|full|ultra|wenyan`
-    - Exit: "stop caveman" or "normal mode"
+      **Core Rules:**
+      - Eliminate articles (a/an/the), filler words (just/really/basically), pleasantries, hedging
+      - Keep fragments, technical terms precise, code untouched
+      - Structure: [thing] [action] [reason]. [next step].
+      - Avoid: "Sure! I'd be happy to help you with that."
+      - Prefer: "Bug in auth middleware. Fix:"
 
-    **Exceptions:**
-    - Auto-suspend for security warnings, irreversible actions, user confusion — resume after clarity restored
-    - Code/commits/PRs written in normal style
-  '';
+      **Controls:**
+      - Switch intensity: `/caveman lite|full|ultra|wenyan`
+      - Exit: "stop caveman" or "normal mode"
 
-  # Claude skills - symlink to nixos_conf/skills (out-of-store, editable)
-  home.file.".claude/skills".source = config.lib.file.mkOutOfStoreSymlink "/home/ubr/nixos_conf/skills";
+      **Exceptions:**
+      - Auto-suspend for security warnings, irreversible actions, user confusion — resume after clarity restored
+      - Code/commits/PRs written in normal style
+    '';
+
+    # Claude skills - symlink to the repo's skills/ dir (out-of-store, editable).
+    # Each host sets the path since the repo lives at a different location per machine.
+    home.file.".claude/skills".source =
+      config.lib.file.mkOutOfStoreSymlink config.claude.skillsRepoPath;
+  };
 }

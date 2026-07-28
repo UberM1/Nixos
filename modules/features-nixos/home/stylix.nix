@@ -1,4 +1,4 @@
-{...}: {
+_: {
   stylix.targets = {
     rofi.enable = true;
     gtk.enable = true;

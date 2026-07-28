@@ -1,0 +1,5 @@
+# Disabled lints:
+# - empty_pattern: `{...}:` is the idiomatic module signature we use throughout.
+# - repeated_keys: dotted keys (services.blueman.enable, ...) read better than
+#   collapsing everything into one `services = { ... }` block.
+disabled = ["empty_pattern", "repeated_keys"]

@@ -1,9 +1,5 @@
 {inputs, ...}: let
   system = "aarch64-darwin";
-  pkgs = import inputs.nixpkgs-darwin {
-    inherit system;
-    config.allowUnfree = true;
-  };
   pkgs-unstable = import inputs.nixpkgs-unstable {
     inherit system;
     config.allowUnfree = true;
@@ -30,7 +26,7 @@ in {
             {
               nixpkgs.config.allowUnfree = true;
               nixpkgs.overlays = [
-                (final: prev: {
+                (_final: prev: {
                   # direnv fish tests get SIGKILL'd by macOS sandbox when building from source
                   direnv = prev.direnv.overrideAttrs (_: {doCheck = false;});
                 })

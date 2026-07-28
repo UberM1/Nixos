@@ -1,4 +1,4 @@
-{...}: {
+_: {
   home.file = {
     "scripts/fontpreview" = {
       source = ./scripts/fontpreview;

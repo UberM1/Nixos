@@ -1,6 +1,7 @@
-{...}: {
+_: {
   programs.aerospace = {
     enable = true;
+    launchd.enable = true;
     settings = {
       enable-normalization-flatten-containers = false;
       enable-normalization-opposite-orientation-for-nested-containers = false;

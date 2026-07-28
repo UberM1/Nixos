@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}: {
+{...}: {
   imports = [
     # Cross-platform features
     ../../features/stylix.nix
@@ -33,6 +28,8 @@
     ../../features-nixos/home/scripts.nix
     ../../features-nixos/home/bars/noctalia.nix
   ];
+
+  claude.skillsRepoPath = "/home/ubr/nixos_conf/skills";
 
   home.username = "ubr";
   home.homeDirectory = "/home/ubr";

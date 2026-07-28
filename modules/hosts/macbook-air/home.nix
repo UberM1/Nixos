@@ -23,6 +23,8 @@
     ../../features-darwin/home/ruby.nix
   ];
 
+  claude.skillsRepoPath = "/Users/matiasuberti/Nixos/skills";
+
   home.username = lib.mkForce "matiasuberti";
   home.homeDirectory = lib.mkForce "/Users/matiasuberti";
   home.stateVersion = "25.05";

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   imports = [
     ../../features-darwin/system/defaults.nix
     ../../features-darwin/system/homebrew.nix

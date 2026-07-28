@@ -72,6 +72,22 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-darwin"];
 
+      perSystem = {pkgs, ...}: {
+        formatter = pkgs.alejandra;
+
+        checks = {
+          format =
+            pkgs.runCommand "check-format" {nativeBuildInputs = [pkgs.alejandra];}
+            "alejandra --check ${./.} && touch $out";
+          statix =
+            pkgs.runCommand "check-statix" {nativeBuildInputs = [pkgs.statix];}
+            "statix check -c ${./statix.toml} ${./.} && touch $out";
+          deadnix =
+            pkgs.runCommand "check-deadnix" {nativeBuildInputs = [pkgs.deadnix];}
+            "deadnix --fail ${./.} && touch $out";
+        };
+      };
+
       imports = [
         ./modules/hosts/ubr
         ./modules/hosts/macbook-air
