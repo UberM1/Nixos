@@ -27,7 +27,7 @@
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
-    nameservers = ["1.1.1.1"];
+    nameservers = ["10.0.0.2"];
   };
 
   # Timezone
