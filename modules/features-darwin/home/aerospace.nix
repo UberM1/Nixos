@@ -3,8 +3,48 @@ _: {
     enable = true;
     launchd.enable = true;
     settings = {
-      enable-normalization-flatten-containers = false;
-      enable-normalization-opposite-orientation-for-nested-containers = false;
+      enable-normalization-flatten-containers = true;
+      enable-normalization-opposite-orientation-for-nested-containers = true;
+
+      on-window-detected = [
+        {
+          "if".app-id = "com.apple.systempreferences";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.apple.SystemProfiler";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.apple.ActivityMonitor";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.apple.calculator";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-name-regex-substring = "mosyle";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.mosyle.macos.business";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.mosyle.macos.notificationcenter";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.microsoft.rdc.macos";
+          run = ["layout floating"];
+        }
+        {
+          "if".app-id = "com.apple.finder";
+          "if".window-title-regex-substring = "Copiar|Copy|Mover|Move";
+          run = ["layout floating"];
+        }
+      ];
 
       mode.main.binding = {
         alt-h = "focus --boundaries-action wrap-around-the-workspace left";
