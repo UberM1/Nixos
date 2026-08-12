@@ -28,6 +28,17 @@
     hostName = "nixos";
     networkmanager.enable = true;
     nameservers = ["1.1.1.1"];
+
+    firewall.interfaces.enp3s0 = {
+      allowedTCPPortRanges = [
+        {
+          from = 32768;
+          to = 60999;
+        }
+      ];
+      allowedTCPPorts = [25565];
+      allowedUDPPorts = [4445];
+    };
   };
 
   # Timezone
