@@ -6,15 +6,24 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Pinned to the exact rev the bastion server was already running when it was
-    # migrated out of its own nested flake, so the migration changed nothing.
-    # Bump deliberately -- it rebuilds and restarts the entire media stack.
-    nixpkgs-bastion.url = "github:NixOS/nixpkgs/549bd84d6279f9852cae6225e372cc67fb91a4c1";
+    # Bastion keeps its own nixpkgs input rather than sharing the desktop hosts'
+    # so the media server can be rebuilt on its own schedule: updating a laptop
+    # should not restart Jellyfin mid-playback. Both track 26.05 today, so the
+    # separation costs an extra evaluation and buys independent timing.
+    #
+    # This was frozen at an exact rev (549bd84) while the host was migrated out
+    # of a standalone nested flake, so the evaluated system could be proven
+    # byte-identical before and after. That verification is done; tracking the
+    # release branch again is what keeps security fixes flowing.
+    #
+    # Bump deliberately -- it rebuilds and restarts the entire media stack, and
+    # comin deploys it automatically. Push to `testing-bastion` first.
+    nixpkgs-bastion.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    # Deliberately not following nixpkgs-bastion: the nested flake this was
-    # migrated from let nixarr use its own pinned nixpkgs, and a follows here
-    # would change what gets built.
-    nixarr.url = "github:nix-media-server/nixarr/476ffae2a09911008847dd5a86c18b8cb484d198";
+    # Deliberately not following nixpkgs-bastion: nixarr pins the nixpkgs it is
+    # tested against, and a follows here would build its packages against a
+    # different tree than upstream CI does.
+    nixarr.url = "github:nix-media-server/nixarr";
 
     # GitOps auto-deploy for the bastion server. Not in nixpkgs.
     comin = {
