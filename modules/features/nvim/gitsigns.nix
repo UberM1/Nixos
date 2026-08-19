@@ -33,9 +33,10 @@
             return '<Ignore>'
           end, {expr=true, buffer=bufnr, desc="Previous git hunk"})
 
-          -- Actions
-          vim.keymap.set('n', '<leader>hp', gs.preview_hunk, {buffer=bufnr, desc="Preview hunk"})
-          vim.keymap.set('n', '<leader>hr', gs.reset_hunk, {buffer=bufnr, desc="Reset hunk"})
+          -- Actions. Kept under <leader>g with the other git maps: <leader>h is the
+          -- left-split move, so <leader>h{p,r} used to stall it for timeoutlen.
+          vim.keymap.set('n', '<leader>gp', gs.preview_hunk, {buffer=bufnr, desc="Preview hunk"})
+          vim.keymap.set('n', '<leader>gr', gs.reset_hunk, {buffer=bufnr, desc="Reset hunk"})
         end
       '';
     };

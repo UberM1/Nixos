@@ -175,19 +175,20 @@ in {
       ];
 
       bindel = [
-        ",XF86AudioRaiseVolume,exec,wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ",XF86AudioLowerVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ",XF86AudioMute,exec,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ",XF86AudioMicMute,exec,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ",XF86MonBrightnessUp,exec,brightnessctl s 10%+"
-        ",XF86MonBrightnessDown,exec,brightnessctl s 10%-"
+        ",XF86AudioRaiseVolume,exec,noctalia msg volume-up"
+        ",XF86AudioLowerVolume,exec,noctalia msg volume-down"
+        ",XF86AudioMute,exec,noctalia msg volume-mute"
+        ",XF86AudioMicMute,exec,noctalia msg mic-mute"
+        ",XF86MonBrightnessUp,exec,noctalia msg brightness-up"
+        ",XF86MonBrightnessDown,exec,noctalia msg brightness-down"
       ];
 
       bindl = [
-        ",XF86AudioNext,exec,playerctl next"
-        ",XF86AudioPause,exec,playerctl play-pause"
-        ",XF86AudioPlay,exec,playerctl play-pause"
-        ",XF86AudioPrev,exec,playerctl previous"
+        ",XF86AudioNext,exec,noctalia msg media next"
+        ",XF86AudioPrev,exec,noctalia msg media previous"
+        ",XF86AudioPlay,exec,noctalia msg media toggle"
+        ",XF86AudioPause,exec,noctalia msg media toggle"
+        ",XF86AudioStop,exec,noctalia msg media stop"
       ];
     };
 

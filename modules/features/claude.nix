@@ -11,32 +11,58 @@
   };
 
   config = {
-    home.packages = [
-      pkgs-unstable.claude-code
-      pkgs.mcp-nixos
-    ];
+    # Declared here, not in programs.claude-code.mcpServers: only this path
+    # applies wrapEnvFilesCommand, which keeps env-file secrets out of the store.
+    programs.mcp = {
+      enable = true;
 
-    home.file.".claude/CLAUDE.md".text = ''
-      # Caveman Mode
+      servers = {
+        nixos.command = lib.getExe pkgs.mcp-nixos;
 
-      **Core Rules:**
-      - Eliminate articles (a/an/the), filler words (just/really/basically), pleasantries, hedging
-      - Keep fragments, technical terms precise, code untouched
-      - Structure: [thing] [action] [reason]. [next step].
-      - Avoid: "Sure! I'd be happy to help you with that."
-      - Prefer: "Bug in auth middleware. Fix:"
+        # OAuth in-band: authenticate with /mcp inside a session.
+        metabase.url = "https://metabase.monitorbit.xyz/api/metabase-mcp";
 
-      **Controls:**
-      - Switch intensity: `/caveman lite|full|ultra|wenyan`
-      - Exit: "stop caveman" or "normal mode"
+        # Behind netbird; the VPN must be up for this to resolve.
+        grafana = {
+          command = lib.getExe pkgs.mcp-grafana;
+          args = ["-t" "stdio"];
+          env = {
+            GRAFANA_URL = "https://grafana.monitorbit.xyz";
+            # install -Dm600 /dev/stdin ~/.secrets/grafana-mcp-token <<< '<token>'
+            GRAFANA_API_KEY.file = "${config.home.homeDirectory}/.secrets/grafana-mcp-token";
+          };
+        };
+      };
+    };
 
-      **Exceptions:**
-      - Auto-suspend for security warnings, irreversible actions, user confusion — resume after clarity restored
-      - Code/commits/PRs written in normal style
-    '';
+    programs.claude-code = {
+      enable = true;
+      package = pkgs-unstable.claude-code;
 
-    # Claude skills - symlink to the repo's skills/ dir (out-of-store, editable).
-    # Each host sets the path since the repo lives at a different location per machine.
+      # Ships programs.mcp.servers as a --plugin-dir, leaving ~/.claude.json mutable.
+      enableMcpIntegration = true;
+
+      context = ''
+        # Caveman Mode
+
+        **Core Rules:**
+        - Eliminate articles (a/an/the), filler words (just/really/basically), pleasantries, hedging
+        - Keep fragments, technical terms precise, code untouched
+        - Structure: [thing] [action] [reason]. [next step].
+        - Avoid: "Sure! I'd be happy to help you with that."
+        - Prefer: "Bug in auth middleware. Fix:"
+
+        **Controls:**
+        - Switch intensity: `/caveman lite|full|ultra|wenyan`
+        - Exit: "stop caveman" or "normal mode"
+
+        **Exceptions:**
+        - Auto-suspend for security warnings, irreversible actions, user confusion — resume after clarity restored
+        - Code/commits/PRs written in normal style
+      '';
+    };
+
+    # Not programs.claude-code.skills: that copies into the store, read-only.
     home.file.".claude/skills".source =
       config.lib.file.mkOutOfStoreSymlink config.claude.skillsRepoPath;
   };
