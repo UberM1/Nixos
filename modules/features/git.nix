@@ -12,4 +12,18 @@ _: {
       safe.directory = "/etc/nixos";
     };
   };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      syntax-theme = "base16-stylix";
+      line-numbers = true;
+      features = "interactive";
+      interactive = {
+        navigate = true;
+        hyperlinks = true;
+      };
+    };
+  };
 }

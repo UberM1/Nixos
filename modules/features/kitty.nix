@@ -1,11 +1,22 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
   kittyScrollbackPkg = pkgs.vimPlugins.kitty-scrollback-nvim;
   kittyScrollbackKitten = "${kittyScrollbackPkg}/python/kitty_scrollback_nvim.py";
+
+  agents = pkgs.writeShellApplication {
+    name = "agents";
+    runtimeInputs =
+      [pkgs.python3 pkgs.fzf config.programs.kitty.package]
+      ++ lib.optional pkgs.stdenv.isLinux pkgs.procps;
+    text = ''exec python3 ${./scripts/agents.py} "$@"'';
+  };
 in {
+  home.packages = [agents];
+
   programs.kitty = {
     enable = true;
     settings = {
@@ -18,6 +29,7 @@ in {
       enable_audio_bell = false;
       update_check_interval = 0;
       shell_integration = "enabled";
+      notify_on_cmd_finish = "unfocused 15.0";
       placement_strategy = "top-left";
       enabled_layouts = "splits,stack";
       cursor_trail = 10;
@@ -66,10 +78,15 @@ in {
 
       # Show clicked command output in nvim
       mouse_map ctrl+shift+right press ungrabbed combine : mouse_select_command_output : kitty_scrollback_nvim --config ksb_builtin_last_visited_cmd_output
+
+      # Incremental search over the scrollback, without leaving kitty
+      map ctrl+shift+f launch --allow-remote-control --type=overlay kitty +kitten kittens/search.py @active-kitty-window-id
+
+      # Jump to any running coding agent
+      map ctrl+shift+d launch --allow-remote-control --type=overlay ${agents}/bin/agents
     '';
   };
 
   # Copy custom kittens to kitty config directory
   home.file.".config/kitty/kittens/search.py".source = ./kittens/search.py;
-  home.file.".config/kitty/kittens/scroll_mark.py".source = ./kittens/scroll_mark.py;
 }

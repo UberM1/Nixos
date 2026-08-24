@@ -8,5 +8,6 @@
     kustomize
     kubent
     kubernetes-helm
+    gcx # grafana cli
   ];
 }

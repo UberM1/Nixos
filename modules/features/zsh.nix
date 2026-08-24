@@ -72,10 +72,15 @@
     };
 
     history = {
-      size = 1000;
-      save = 1000;
+      size = 200000;
+      save = 200000;
       path = "$HOME/.zsh_history";
       ignoreDups = true;
+      ignoreAllDups = true;
+      saveNoDups = true;
+      findNoDups = true;
+      ignoreSpace = true;
+      extended = true;
       share = true;
     };
 
@@ -86,7 +91,6 @@
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = "/var/run/docker.sock";
       DISABLE_SPRING = "true";
       KUBECONFIG = "$HOME/.kube/work-htz-stage.yaml:$HOME/.kube/work-htz-tools.yaml:$HOME/.kube/work-htz-prod.yaml:$HOME/.kube/work-htz-prod-usa.yaml";
-      TERM = "xterm-kitty";
       RUBY_CONFIGURE_OPTS = "--with-openssl-dir=${pkgs.openssl_3.dev} --with-readline-dir=${pkgs.readline} --with-libyaml-dir=${pkgs.libyaml}";
       EDITOR = "nvim";
       _JAVA_AWT_WM_NONREPARENTING = "1";
@@ -103,6 +107,14 @@
       aseprite = "steam steam://rungameid/431730;exit";
     };
 
+    plugins = [
+      {
+        name = "fzf-tab";
+        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+        file = "fzf-tab.plugin.zsh";
+      }
+    ];
+
     oh-my-zsh = {
       enable = true;
       theme = "";
@@ -117,13 +129,11 @@
         "vscode"
         "macos"
         "brew"
-        "fzf"
       ];
     };
 
     initContent = ''
       autoload -U +X bashcompinit && bashcompinit
-      autoload -U +X compinit && compinit
 
       typeset -U path PATH
       path=(~/.local/bin $path)
@@ -145,14 +155,19 @@
       zstyle ':completion:*' completer _expand _complete _correct _approximate
       zstyle ':completion:*' format 'Completing %d'
       zstyle ':completion:*' group-name '''
-      zstyle ':completion:*' menu select=2
-      zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
       zstyle ':completion:*' matcher-list ''' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-      zstyle ':completion:*' menu select=long
-      zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+      zstyle ':completion:*' menu no
       zstyle ':completion:*' use-compctl false
       zstyle ':completion:*' verbose true
       zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+      zstyle ':fzf-tab:*' use-fzf-default-opts yes
+      zstyle ':fzf-tab:*' switch-group ',' '.'
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --tree --depth 2 --color=always $realpath'
+      zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'lsd --tree --depth 2 --color=always $realpath'
+      zstyle ':fzf-tab:complete:(nvim|bat|cat|rm|cp|mv):*' fzf-preview 'bat --style=numbers --color=always --line-range :200 $realpath 2>/dev/null || lsd --tree --depth 2 --color=always $realpath'
+      zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+      zstyle ':fzf-tab:complete:git-(add|diff|restore|checkout):*' fzf-preview 'git diff $word | delta'
 
       # rbenv initialization
       if command -v rbenv >/dev/null 2>&1; then
@@ -192,6 +207,28 @@
         source "$HOME/.zsh_functions"
       fi
     '';
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    defaultCommand = "fd --type f --hidden --follow --exclude .git";
+    defaultOptions = [
+      "--height 60%"
+      "--layout=reverse"
+      "--border"
+      "--info=inline"
+      "--cycle"
+      "--bind=ctrl-d:half-page-down,ctrl-u:half-page-up"
+      "--bind=alt-g:first,alt-G:last"
+      "--bind=alt-j:preview-down,alt-k:preview-up"
+      "--bind=alt-p:toggle-preview"
+      "--bind=ctrl-alt-u:clear-query"
+    ];
+    fileWidgetCommand = "fd --type f --hidden --follow --exclude .git";
+    fileWidgetOptions = ["--preview 'bat --style=numbers --color=always --line-range :200 {}'"];
+    changeDirWidgetCommand = "fd --type d --hidden --follow --exclude .git";
+    changeDirWidgetOptions = ["--preview 'lsd --tree --depth 2 --color=always {}'"];
   };
 
   programs.direnv = {

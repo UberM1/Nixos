@@ -15,5 +15,12 @@
     hcloud
     gh
     glab
+    tealdeer
+    dust
+    procs
+    hyperfine
+    watchexec
+    jless
+    sd
   ];
 }
