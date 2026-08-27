@@ -1,38 +1,52 @@
-{pkgs, ...}: {
-  # vimtex shells out to latexmk and zathura by name, so they must be on PATH.
+{
+  pkgs,
+  lib,
+  ...
+}: {
+  # vimtex shells out to latexmk and a viewer by name, so they must be on PATH.
   # scheme-medium turns out not to cover much beyond the basics, so the packages
   # actually used by documents here are listed explicitly. xcharter additionally
   # needs fontaxes, which nothing pulls in for it: without both, a document
   # asking for XCharter dies on a missing .sty or silently falls back to charter.
-  home.packages = [
-    (pkgs.texlive.withPackages (ps:
-      with ps; [
-        scheme-medium
-        xcharter
-        fontaxes
-        enumitem
-        titlesec
-        fancyhdr
-        microtype
-        xcolor
-        geometry
-        hyperref
-        babel-english
-        charter
-        psnfss
-        wrapfig
-        cancel
-      ]))
-    pkgs.zathura
-  ];
+  home.packages =
+    [
+      (pkgs.texlive.withPackages (ps:
+        with ps; [
+          scheme-medium
+          xcharter
+          fontaxes
+          enumitem
+          titlesec
+          fancyhdr
+          microtype
+          xcolor
+          geometry
+          hyperref
+          babel-english
+          charter
+          psnfss
+          wrapfig
+          cancel
+        ]))
+    ]
+    ++ lib.optional pkgs.stdenv.isLinux pkgs.zathura;
 
   programs.nixvim = {
     # Nixvim has no vimtex module, so it goes in as a raw plugin.
-    extraPlugins = [pkgs.vimPlugins.vimtex];
+    # Its fzf-lua module calls serverstart() on load, which nixpkgs' require
+    # check cannot run in the sandbox. Nothing here uses fzf-lua, so skip it.
+    extraPlugins = [
+      (pkgs.vimPlugins.vimtex.overrideAttrs (old: {
+        nvimSkipModules = (old.nvimSkipModules or []) ++ ["vimtex.fzf-lua.init"];
+      }))
+    ];
 
     # vimtex reads its configuration from globals at load time, not via setup().
     globals = {
-      vimtex_view_method = "zathura";
+      vimtex_view_method =
+        if pkgs.stdenv.isDarwin
+        then "skim"
+        else "zathura";
       vimtex_compiler_method = "latexmk";
       vimtex_quickfix_open_on_warning = 0;
 
