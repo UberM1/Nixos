@@ -1,8 +1,15 @@
 # Repo guide for AI agents
 
-Nix flake (flake-parts) managing three machines. The repo lives at
-`/Users/matiasuberti/Nixos` on the mac and `/home/ubr/nixos_conf` on the NixOS desktop —
-some modules hardcode these paths on purpose (e.g. the `claude.skillsRepoPath` option).
+Nix flake (flake-parts) managing two personal machines: a MacBook and a NixOS desktop.
+The repo lives at `/Users/matiasuberti/Nixos` on the mac and `/home/ubr/nixos_conf` on
+the NixOS desktop — some modules hardcode these paths on purpose (e.g. the
+`claude.skillsRepoPath` option).
+
+The `bastion` server used to live here too, under `modules/hosts/bastion/`. It now has
+its own repo, [UberM1/nixos-bastion](https://github.com/UberM1/nixos-bastion), because it
+shares nothing with the desktops: different nixpkgs cadence, different inputs, and a
+deploy path where pushing to `main` is a production event. Nothing in this repo describes
+that machine any more.
 
 ## Hosts
 
@@ -10,22 +17,12 @@ some modules hardcode these paths on purpose (e.g. the `claude.skillsRepoPath` o
 |---|---|---|---|
 | `macbook-air` | `darwinConfigurations.macbook-air` | aarch64-darwin | `sudo darwin-rebuild switch --flake .#macbook-air` |
 | `ubr` | `nixosConfigurations.ubr` | x86_64-linux desktop | `sudo nixos-rebuild switch --flake .#ubr` |
-| `bastion` | `nixosConfigurations.bastion-server` | x86_64-linux server | **comin GitOps — never manually** |
 
-## ⚠️ Bastion auto-deploys from main
+## Inputs
 
-comin (`modules/hosts/bastion/gitops.nix`) watches `main` and applies any commit that
-changes the bastion closure to the live server automatically. A push to main is a
-production deploy. Before pushing anything that touches `modules/hosts/bastion/` or its
-flake inputs, verify the eval and tell the user the push will deploy.
-
-## Pinned inputs — do not "clean up"
-
-- `nixpkgs-bastion` is pinned to an exact rev and `nixarr` deliberately does **not**
-  `follows` it. The comments in `flake.nix` explain why. Bumping either rebuilds and
-  restarts the whole media stack on the live server; only do it when explicitly asked.
-- Desktop hosts track `nixos-26.05` / `nixpkgs-26.05-darwin`, with `nixpkgs-unstable`
-  available as `pkgs-unstable` via `extraSpecialArgs` where a newer package is needed.
+Both hosts track `nixos-26.05` / `nixpkgs-26.05-darwin`, with `nixpkgs-unstable` available
+as `pkgs-unstable` via `extraSpecialArgs` where a newer package is needed. Nothing here is
+applied automatically — every change lands through an explicit rebuild on the machine.
 
 ## Module layout (dendritic-inspired)
 
@@ -51,8 +48,6 @@ Conventions:
 - Same-named files in `features/` and `features-nixos/home/` (e.g. `kitty.nix`,
   `stylix.nix`, `apps.nix`, `work-pkgs.nix`) are intentional: the shared base and a
   platform-specific extension, both imported by ubr. Don't merge or dedupe them.
-- Bastion is self-contained under `modules/hosts/bastion/` and imports nothing from
-  `features*`.
 - `modules/features/claude.nix` generates `~/.claude/CLAUDE.md` (the user's global Claude
   instructions). Edit it there, not in the home directory.
 
@@ -73,13 +68,5 @@ the base16 scheme, fonts and cursor automatically. When adding an app:
 ## Workflow
 
 1. Format before committing: `nix fmt` (alejandra, defined as the flake formatter).
-2. Run `nix flake check` — this is the gate. It runs three `checks` (format via alejandra
-   `--check`, lint via `statix`, dead-code via `deadnix`) **and** evaluates every host
-   config. Keep it green.
-   - `statix.toml` disables `empty_pattern` and `repeated_keys` on purpose (they fight our
-     idiomatic module style); don't re-enable them, and don't rewrite code to appease them.
-   - To eval a single host without a full check:
-     `nix eval --raw .#nixosConfigurations.ubr.config.system.build.toplevel.drvPath`
-     (linux hosts can only be *evaluated*, not *built*, on the mac).
-3. Commit messages: imperative one-liners explaining why, matching `git log` style.
-4. Don't push to main without asking — see the bastion warning above.
+2. Commit messages: imperative one-liners explaining why, matching `git log` style.
+3. Don't push to main without asking.

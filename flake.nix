@@ -6,31 +6,6 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Bastion keeps its own nixpkgs input rather than sharing the desktop hosts'
-    # so the media server can be rebuilt on its own schedule: updating a laptop
-    # should not restart Jellyfin mid-playback. Both track 26.05 today, so the
-    # separation costs an extra evaluation and buys independent timing.
-    #
-    # This was frozen at an exact rev (549bd84) while the host was migrated out
-    # of a standalone nested flake, so the evaluated system could be proven
-    # byte-identical before and after. That verification is done; tracking the
-    # release branch again is what keeps security fixes flowing.
-    #
-    # Bump deliberately -- it rebuilds and restarts the entire media stack, and
-    # comin deploys it automatically. Push to `testing-bastion` first.
-    nixpkgs-bastion.url = "github:NixOS/nixpkgs/nixos-26.05";
-
-    # Deliberately not following nixpkgs-bastion: nixarr pins the nixpkgs it is
-    # tested against, and a follows here would build its packages against a
-    # different tree than upstream CI does.
-    nixarr.url = "github:nix-media-server/nixarr";
-
-    # GitOps auto-deploy for the bastion server. Not in nixpkgs.
-    comin = {
-      url = "github:nlewo/comin";
-      inputs.nixpkgs.follows = "nixpkgs-bastion";
-    };
-
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nix-darwin = {
@@ -100,7 +75,6 @@
       imports = [
         ./modules/hosts/ubr
         ./modules/hosts/macbook-air
-        ./modules/hosts/bastion
       ];
     };
 }
