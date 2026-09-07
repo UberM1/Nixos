@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    ./work-hosts.nix
     ../../features-nixos/system/desktop-utils.nix
     ../../features-nixos/system/privileged.nix
     ../../features-nixos/system/dolphin.nix

@@ -1,6 +1,6 @@
 # Nixos
 
-Nix flake managing three machines with a shared, feature-based module tree.
+Nix flake managing two personal machines with a shared, feature-based module tree.
 
 ## Hosts
 
@@ -8,11 +8,9 @@ Nix flake managing three machines with a shared, feature-based module tree.
 |---|---|---|---|
 | `macbook-air` | aarch64-darwin | laptop | `sudo darwin-rebuild switch --flake .#macbook-air` |
 | `ubr` | x86_64-linux | desktop (Hyprland) | `sudo nixos-rebuild switch --flake .#ubr` |
-| `bastion` | x86_64-linux | server (media + observability) | auto — see below |
 
-**Bastion deploys itself.** [comin](https://github.com/nlewo/comin) watches `main` and
-applies any commit touching the bastion closure to the live server. A push to `main` is a
-production deploy — never run `nixos-rebuild` against it by hand.
+Nothing here is applied automatically — every change lands through an explicit rebuild on
+the machine.
 
 ## Layout
 
@@ -29,6 +27,13 @@ skills/                    Claude skills, symlinked into ~/.claude/skills
 Features are composed into hosts by explicit `imports` — there is no auto-discovery.
 Theming is centralized through [stylix](https://github.com/danth/stylix).
 
+## Machine-local configuration
+
+Anything specific to a particular employer or network — cluster names, VPN profiles,
+internal hostnames — is kept out of this repo. `programs.zsh` sources
+`~/.secrets/work-env.zsh` when it exists; create it with mode `0600` and it stays out of
+both the store and git.
+
 ## Working on the repo
 
 ```sh
@@ -36,5 +41,5 @@ nix fmt              # format (alejandra)
 nix flake check      # format + statix + deadnix + evaluate every host
 ```
 
-See [CLAUDE.md](./CLAUDE.md) for the full contributor guide (pinning rules, dendritic
-structure, theming conventions).
+See [CLAUDE.md](./CLAUDE.md) for the full contributor guide (module conventions, theming
+rules, dendritic structure).
