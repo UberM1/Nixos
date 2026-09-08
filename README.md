@@ -27,13 +27,6 @@ skills/                    Claude skills, symlinked into ~/.claude/skills
 Features are composed into hosts by explicit `imports` — there is no auto-discovery.
 Theming is centralized through [stylix](https://github.com/danth/stylix).
 
-## Machine-local configuration
-
-Anything specific to a particular employer or network — cluster names, VPN profiles,
-internal hostnames — is kept out of this repo. `programs.zsh` sources
-`~/.secrets/work-env.zsh` when it exists; create it with mode `0600` and it stays out of
-both the store and git.
-
 ## Working on the repo
 
 ```sh
