@@ -22,23 +22,13 @@ Obsidian picks up external file changes automatically; no reload needed.
 
 ### `obsidian-cli` (official CLI, v1.12+)
 
-Talks to the **running** Obsidian desktop app via IPC — if Obsidian is closed, commands fail; fall back to direct file edits. Full command reference: invoke the `obsidian-cli` skill.
+Talks to the **running** Obsidian desktop app via IPC; with Obsidian closed, commands fail
+and direct file edits are the fallback. Invoke the `obsidian-cli` skill for the binary
+name, calling convention and command reference.
 
-> [!warning] The binary is `obsidian-cli`. `obs` is OBS Studio — not Obsidian. Don't confuse them.
-
-Prefer the CLI for what the app's index does better than grep:
-
-```bash
-obsidian-cli search query="wrapper" path="LCC"   # full-text search with Obsidian's index
-obsidian-cli backlinks file="nix"                # who links TO this note
-obsidian-cli links file="nix"                    # outgoing links
-obsidian-cli unresolved                          # wikilinks pointing nowhere (TODO list)
-obsidian-cli orphans                             # notes nothing links to
-obsidian-cli properties path="LCC/Linux/nix.md"  # read frontmatter
-obsidian-cli property:set path="..." name="status" value="active"
-obsidian-cli templates                           # list available templates
-obsidian-cli daily:append content="- note"       # today's daily note
-```
+Reach for it when the app's index beats grep: full-text search, backlinks, outgoing links,
+orphans, unresolved wikilinks, frontmatter reads, templates, daily-note appends. Paths in
+this vault are `path="LCC/Linux/nix.md"` shaped, from the vault root.
 
 ## Searching the vault — decision guide
 
@@ -50,18 +40,11 @@ obsidian-cli daily:append content="- note"       # today's daily note
 | Graph questions (backlinks, orphans, broken links) | `obsidian-cli backlinks/orphans/unresolved` |
 | "Does a note on X already exist?" | Both: Glob by name + Grep by keyword — **always check before creating** (editing an existing note beats creating a duplicate) |
 
-## Linking — how and when
+## Linking — when
 
-Syntax:
-```markdown
-[[Nota]]                    link
-[[Nota|texto visible]]      custom display
-[[Nota#Sección]]            heading link
-![[Nota]]                   embed (transclusion)
-![[imagen.png|400]]         image embed with width
-```
+Syntax (wikilinks, embeds, block refs) lives in the `obsidian-markdown` skill; invoke it
+for the how. This section owns only the vault's own policy on *when*.
 
-When to link:
 - **First mention** of a concept that has (or deserves) its own note — not every repetition.
 - The `Notas relacionadas: [[X]] · [[Y]]` line near the top of every technical note (required by CLAUDE.md).
 - Academic cross-links per the CLAUDE.md table (MVCC → [[Teoria de Bases de Datos]], scheduling → [[Sistemas Operativos]], etc.).

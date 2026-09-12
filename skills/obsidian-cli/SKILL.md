@@ -1,106 +1,51 @@
 ---
 name: obsidian-cli
-description: Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
+description: "Drive a running Obsidian desktop app from the shell: read, create, search and link notes through Obsidian's own index, or reload and debug a plugin or theme. Use for vault operations that beat grep, and for the plugin develop/test cycle."
 ---
 
 # Obsidian CLI
 
-Use the `obsidian` CLI to interact with a running Obsidian instance. Requires Obsidian to be open.
+The binary is `obsidian-cli`. `obsidian` is the Electron GUI launcher and `obs` is OBS
+Studio; both ignore these arguments. Upstream's own help text prints `Usage: obsidian
+<command>`, which is the name upstream expects, not the name nixpkgs installs.
+
+Commands reach the **running** desktop app over IPC. With Obsidian closed they fail, and
+the fallback is direct Read/Write/Grep on the vault directory.
 
 ## Command reference
 
-Run `obsidian help` to see all available commands. This is always up to date. Full docs: https://help.obsidian.md/cli
+`obsidian-cli help` lists every command and its parameters, and it is generated from the
+installed binary, so it never goes stale. Read it before guessing at a command name.
 
-## Syntax
+Web docs, for concepts rather than syntax: https://help.obsidian.md/cli
 
-**Parameters** take a value with `=`. Quote values with spaces:
+## Calling convention
 
-```bash
-obsidian create name="My Note" content="Hello world"
-```
+What `help` does not spell out:
 
-**Flags** are boolean switches with no value:
+- **Parameters** take a value with `=`; **flags** are bare words.
+  ```bash
+  obsidian-cli create name="My Note" content="Hello world" silent overwrite
+  ```
+- Quote any value containing spaces. Use `\n` and `\t` inside `content=` for multiline text.
+- **File targeting**: `file=<name>` resolves like a wikilink (no path, no extension);
+  `path=<path>` is exact from the vault root. With neither, the command hits the active file.
+- **Vault targeting**: commands go to the most recently focused vault. To pin one, put
+  `vault=<name>` first, before the command:
+  ```bash
+  obsidian-cli vault="My Vault" search query="test"
+  ```
+- Useful modifiers on most commands: `--copy` sends output to the clipboard, `silent`
+  stops the file opening in the GUI, `total` turns a list command into a count.
 
-```bash
-obsidian create name="My Note" silent overwrite
-```
+## Plugin develop/test cycle
 
-For multiline content use `\n` for newline and `\t` for tab.
+After changing plugin or theme code, run the loop until `dev:errors` comes back clean:
 
-## File targeting
+1. `obsidian-cli plugin:reload id=my-plugin` — pick up the new code
+2. `obsidian-cli dev:errors` — on any error, fix and return to step 1
+3. `obsidian-cli dev:screenshot path=shot.png` or `obsidian-cli dev:dom selector=".workspace-leaf" text` — confirm the change visually
+4. `obsidian-cli dev:console level=error` — catch warnings the error pane misses
 
-Many commands accept `file` or `path` to target a file. Without either, the active file is used.
-
-- `file=<name>` — resolves like a wikilink (name only, no path or extension needed)
-- `path=<path>` — exact path from vault root, e.g. `folder/note.md`
-
-## Vault targeting
-
-Commands target the most recently focused vault by default. Use `vault=<name>` as the first parameter to target a specific vault:
-
-```bash
-obsidian vault="My Vault" search query="test"
-```
-
-## Common patterns
-
-```bash
-obsidian read file="My Note"
-obsidian create name="New Note" content="# Hello" template="Template" silent
-obsidian append file="My Note" content="New line"
-obsidian search query="search term" limit=10
-obsidian daily:read
-obsidian daily:append content="- [ ] New task"
-obsidian property:set name="status" value="done" file="My Note"
-obsidian tasks daily todo
-obsidian tags sort=count counts
-obsidian backlinks file="My Note"
-```
-
-Use `--copy` on any command to copy output to clipboard. Use `silent` to prevent files from opening. Use `total` on list commands to get a count.
-
-## Plugin development
-
-### Develop/test cycle
-
-After making code changes to a plugin or theme, follow this workflow:
-
-1. **Reload** the plugin to pick up changes:
-   ```bash
-   obsidian plugin:reload id=my-plugin
-   ```
-2. **Check for errors** — if errors appear, fix and repeat from step 1:
-   ```bash
-   obsidian dev:errors
-   ```
-3. **Verify visually** with a screenshot or DOM inspection:
-   ```bash
-   obsidian dev:screenshot path=screenshot.png
-   obsidian dev:dom selector=".workspace-leaf" text
-   ```
-4. **Check console output** for warnings or unexpected logs:
-   ```bash
-   obsidian dev:console level=error
-   ```
-
-### Additional developer commands
-
-Run JavaScript in the app context:
-
-```bash
-obsidian eval code="app.vault.getFiles().length"
-```
-
-Inspect CSS values:
-
-```bash
-obsidian dev:css selector=".workspace-leaf" prop=background-color
-```
-
-Toggle mobile emulation:
-
-```bash
-obsidian dev:mobile on
-```
-
-Run `obsidian help` to see additional developer commands including CDP and debugger controls.
+A reload that reports no errors proves the plugin loaded, not that it works. Step 3 is
+what closes that gap, so run it on every cycle rather than only when something looks wrong.
