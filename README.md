@@ -1,38 +1,24 @@
 # Nixos
 
-Nix flake managing two personal machines with a shared, feature-based module tree.
+Nix flake managing two personal machines — a MacBook and a NixOS desktop — from a shared,
+feature-based module tree. Features are composed into hosts by explicit `imports`; there is
+no auto-discovery. Theming is centralized through [stylix](https://github.com/danth/stylix).
 
-## Hosts
+Nothing here is applied automatically. Every change lands through an explicit rebuild on
+the machine:
 
-| Host | Platform | Role | Apply |
-|---|---|---|---|
-| `macbook-air` | aarch64-darwin | laptop | `sudo darwin-rebuild switch --flake .#macbook-air` |
-| `ubr` | x86_64-linux | desktop (Hyprland) | `sudo nixos-rebuild switch --flake .#ubr` |
-
-Nothing here is applied automatically — every change lands through an explicit rebuild on
-the machine.
-
-## Layout
-
+```sh
+sudo darwin-rebuild switch --flake .#macbook-air   # MacBook
+sudo nixos-rebuild switch --flake .#ubr            # NixOS desktop
 ```
-flake.nix                  inputs, formatter, checks, host outputs
-modules/
-  hosts/<name>/            per-host entry points and host-only modules
-  features/                home-manager modules shared by both desktops
-  features-nixos/          NixOS desktop only (home/ + system/)
-  features-darwin/         macOS only (home/ + system/)
-skills/                    Claude skills, symlinked into ~/.claude/skills
-```
-
-Features are composed into hosts by explicit `imports` — there is no auto-discovery.
-Theming is centralized through [stylix](https://github.com/danth/stylix).
 
 ## Working on the repo
 
 ```sh
-nix fmt              # format (alejandra)
+nix fmt .            # format (alejandra) — the path argument is required
 nix flake check      # format + statix + deadnix + evaluate every host
 ```
 
-See [CLAUDE.md](./CLAUDE.md) for the full contributor guide (module conventions, theming
-rules, dendritic structure).
+[CLAUDE.md](./CLAUDE.md) is the contributor guide and the single source of truth for the
+host table, module layout, conventions, theming rules and workflow. Read it before adding
+a module.

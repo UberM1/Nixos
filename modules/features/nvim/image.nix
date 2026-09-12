@@ -1,26 +1,16 @@
 # Inline image rendering via kitty's graphics protocol.
 #
-# nixpkgs ships image-nvim as a luarocks package that propagates the `magick`
-# rock built against luajit, so the ImageMagick binding works without any
-# extra wiring here. The kitty backend needs no remote control -- it writes
-# graphics escape sequences straight to the terminal.
 {lib, ...}: {
   programs.nixvim.plugins.image = {
     enable = lib.mkDefault true;
     settings = {
       backend = "kitty";
 
-      # image.nvim defaults to the "magick_cli" processor, which shells out to
-      # the ImageMagick binaries and hard-errors when they are missing. They
-      # are only on PATH here by accident -- nothing in this repo declares
-      # imagemagick. The rock is the one dependency nixpkgs does wire up for
-      # us, so use it and depend on nothing implicit.
       processor = "magick_rock";
 
       integrations = {
         markdown = {
           enabled = true;
-          # Images would otherwise sit on top of the text being typed.
           clear_in_insert_mode = true;
           download_remote_images = true;
           only_render_image_at_cursor = false;
@@ -51,7 +41,6 @@
                   return image_path
                 end
 
-                -- `![[name.png|300]]` carries a display width Obsidian strips.
                 local name = image_path:gsub("|.*$", "")
 
                 local resolved = fallback(document_path, name)
@@ -71,8 +60,6 @@
             end)()
           '';
         };
-        # Off by default: no notes in these formats, and each one adds a
-        # treesitter parser and a redraw path for nothing.
         neorg.enabled = false;
         typst.enabled = false;
         syslang.enabled = false;

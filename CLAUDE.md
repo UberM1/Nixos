@@ -5,24 +5,20 @@ The repo lives at `/Users/matiasuberti/Nixos` on the mac and `/home/ubr/nixos_co
 the NixOS desktop — some modules hardcode these paths on purpose (e.g. the
 `claude.skillsRepoPath` option).
 
-The `bastion` server used to live here too, under `modules/hosts/bastion/`. It now has
-its own repo, [UberM1/nixos-bastion](https://github.com/UberM1/nixos-bastion), because it
-shares nothing with the desktops: different nixpkgs cadence, different inputs, and a
-deploy path where pushing to `main` is a production event. Nothing in this repo describes
-that machine any more.
+The `bastion` server moved out to [UberM1/nixos-bastion](https://github.com/UberM1/nixos-bastion);
+nothing here describes that machine any more.
 
 ## Hosts
 
-| Host | Output | Platform | Applied by |
-|---|---|---|---|
-| `macbook-air` | `darwinConfigurations.macbook-air` | aarch64-darwin | `sudo darwin-rebuild switch --flake .#macbook-air` |
-| `ubr` | `nixosConfigurations.ubr` | x86_64-linux desktop | `sudo nixos-rebuild switch --flake .#ubr` |
+| Host | Output | Platform | Role | Applied by |
+|---|---|---|---|---|
+| `macbook-air` | `darwinConfigurations.macbook-air` | aarch64-darwin | laptop | `sudo darwin-rebuild switch --flake .#macbook-air` |
+| `ubr` | `nixosConfigurations.ubr` | x86_64-linux | desktop (Hyprland) | `sudo nixos-rebuild switch --flake .#ubr` |
 
 ## Inputs
 
 Both hosts track `nixos-26.05` / `nixpkgs-26.05-darwin`, with `nixpkgs-unstable` available
-as `pkgs-unstable` via `extraSpecialArgs` where a newer package is needed. Nothing here is
-applied automatically — every change lands through an explicit rebuild on the machine.
+as `pkgs-unstable` via `extraSpecialArgs` where a newer package is needed.
 
 ## Module layout (dendritic-inspired)
 
@@ -34,6 +30,7 @@ imported by explicit relative path. Keep new code in that shape: one feature per
 wired into hosts via `imports`, never by growing `configuration.nix`/`home.nix` inline.
 
 ```
+flake.nix                inputs, formatter, checks, host outputs
 modules/
   hosts/<name>/          entry point (default.nix defines the flake output) + host-only modules
   features/              home-manager modules shared by BOTH desktops (mac + ubr)
@@ -48,8 +45,10 @@ Conventions:
 - Same-named files in `features/` and `features-nixos/home/` (e.g. `kitty.nix`,
   `stylix.nix`, `apps.nix`, `work-pkgs.nix`) are intentional: the shared base and a
   platform-specific extension, both imported by ubr. Don't merge or dedupe them.
-- `modules/features/claude.nix` generates `~/.claude/CLAUDE.md` (the user's global Claude
-  instructions). Edit it there, not in the home directory.
+- `modules/features/claude.nix` wires Claude Code: MCP servers, plugins, and an
+  out-of-store symlink from `skills/` to `~/.claude/skills`. Because that symlink escapes
+  the store, adding or editing a skill is live immediately; changing `claude.nix` itself
+  still needs a rebuild.
 
 ## Theming: stylix first
 
@@ -67,6 +66,15 @@ the base16 scheme, fonts and cursor automatically. When adding an app:
 
 ## Workflow
 
-1. Format before committing: `nix fmt` (alejandra, defined as the flake formatter).
-2. Commit messages: imperative one-liners explaining why, matching `git log` style.
-3. Don't push to main without asking.
+Nothing here is applied automatically — every change lands through an explicit rebuild on
+the machine, using the command in the Hosts table.
+
+1. Format: `nix fmt .` (alejandra). Pass the path: bare `nix fmt` reads stdin, fails, and
+   still exits 0.
+2. Verify before handing work back. `nix flake check` runs format, statix and deadnix and
+   evaluates every host. Two faster loops while iterating: build one check
+   (`nix build .#checks.x86_64-linux.statix`), or evaluate just the option you touched
+   (`nix eval .#nixosConfigurations.ubr.config.<path>`), which proves the wiring without a
+   rebuild.
+3. Commit messages: imperative one-liners explaining why, matching `git log` style.
+4. Ask before pushing to main.
