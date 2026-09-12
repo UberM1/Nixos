@@ -50,6 +50,13 @@
     };
 
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+
+    # Claude Code plugin (.claude-plugin/plugin.json at the root), not a flake.
+    # Consumed as a --plugin-dir by modules/features/claude.nix.
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:

@@ -22,5 +22,7 @@
     watchexec
     jless
     sd
+    rclone
+    dnsutils
   ];
 }

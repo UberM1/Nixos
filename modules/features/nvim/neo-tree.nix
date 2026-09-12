@@ -65,6 +65,15 @@
             "c" = "copy";
             "m" = "move";
             "q" = "close_window";
+            # Float preview that renders images through image.nvim rather
+            # than dumping the binary into a buffer.
+            "P" = {
+              command = "toggle_preview";
+              config = {
+                use_float = true;
+                use_image_nvim = true;
+              };
+            };
           };
         };
       };

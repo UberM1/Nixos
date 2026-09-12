@@ -9,7 +9,9 @@
     prismlauncher
     pkgs-unstable.lavat
     gamescope
+    space-cadet-pinball
     tor-browser
+    discord
 
     (writeShellScriptBin "steam" ''
       exec ${util-linux}/bin/setpriv \

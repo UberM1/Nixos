@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   pkgs-unstable,
   config,
@@ -42,24 +43,11 @@
       # Ships programs.mcp.servers as a --plugin-dir, leaving ~/.claude.json mutable.
       enableMcpIntegration = true;
 
-      context = ''
-        # Caveman Mode
-
-        **Core Rules:**
-        - Eliminate articles (a/an/the), filler words (just/really/basically), pleasantries, hedging
-        - Keep fragments, technical terms precise, code untouched
-        - Structure: [thing] [action] [reason]. [next step].
-        - Avoid: "Sure! I'd be happy to help you with that."
-        - Prefer: "Bug in auth middleware. Fix:"
-
-        **Controls:**
-        - Switch intensity: `/caveman lite|full|ultra|wenyan`
-        - Exit: "stop caveman" or "normal mode"
-
-        **Exceptions:**
-        - Auto-suspend for security warnings, irreversible actions, user confusion — resume after clarity restored
-        - Code/commits/PRs written in normal style
-      '';
+      # Same mechanism: a --plugin-dir on the wrapper, so the skills are on-demand
+      # (invoked by name) instead of always-on context, and they follow the flake
+      # lock rather than a manual clone. Not programs.claude-code.marketplaces:
+      # that option would take over ~/.claude/settings.json, which stays mutable.
+      plugins = [inputs.mattpocock-skills];
     };
 
     # Not programs.claude-code.skills: that copies into the store, read-only.
