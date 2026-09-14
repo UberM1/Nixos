@@ -10,7 +10,7 @@
   agents = pkgs.writeShellApplication {
     name = "agents";
     runtimeInputs =
-      [pkgs.python3 pkgs.fzf config.programs.kitty.package]
+      [pkgs.python3 pkgs.ripgrep config.programs.kitty.package]
       ++ lib.optional pkgs.stdenv.isLinux pkgs.procps;
     text = ''exec python3 ${./scripts/agents.py} "$@"'';
   };

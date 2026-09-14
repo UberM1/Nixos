@@ -97,6 +97,8 @@
       GEM_HOME = "$HOME/.local/share/gem/ruby/3.3.0";
       GEM_PATH = "$HOME/.local/share/gem/ruby/3.3.0";
       PYENV_ROOT = "$HOME/.pyenv";
+
+      NIXPKGS_ALLOW_UNFREE = "1";
     };
 
     shellAliases = {
