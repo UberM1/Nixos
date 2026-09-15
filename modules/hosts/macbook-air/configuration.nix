@@ -4,6 +4,7 @@
     ../../features-darwin/system/homebrew.nix
     ../../features-darwin/system/user.nix
     ../../features-darwin/system/nix-base.nix
+    ../../features-darwin/system/gc.nix
     ../../features-darwin/system/databases.nix
     ../../features-darwin/system/ruby.nix
     ../../features-darwin/system/golang.nix
