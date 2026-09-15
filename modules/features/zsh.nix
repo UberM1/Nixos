@@ -90,7 +90,7 @@
       DOCKER_HOST = "unix://$HOME/.colima/docker.sock";
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = "/var/run/docker.sock";
       DISABLE_SPRING = "true";
-      KUBECONFIG = "$HOME/.kube/work-htz-stage.yaml:$HOME/.kube/work-htz-tools.yaml:$HOME/.kube/work-htz-prod.yaml:$HOME/.kube/work-htz-prod-usa.yaml";
+      KUBECONFIG = "$HOME/.kube/letsbit-htz-stage.yaml:$HOME/.kube/letsbit-htz-tools.yaml:$HOME/.kube/letsbit-htz-prod-usa.yaml";
       RUBY_CONFIGURE_OPTS = "--with-openssl-dir=${pkgs.openssl_3.dev} --with-readline-dir=${pkgs.readline} --with-libyaml-dir=${pkgs.libyaml}";
       EDITOR = "nvim";
       _JAVA_AWT_WM_NONREPARENTING = "1";
