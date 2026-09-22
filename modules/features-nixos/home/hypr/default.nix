@@ -7,6 +7,7 @@
 in {
   imports = [
     ./hypridle.nix
+    ./crt-region.nix
     inputs.hyprland.homeManagerModules.default
   ];
 

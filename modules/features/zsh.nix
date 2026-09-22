@@ -90,7 +90,6 @@
       DOCKER_HOST = "unix://$HOME/.colima/docker.sock";
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = "/var/run/docker.sock";
       DISABLE_SPRING = "true";
-      KUBECONFIG = "$HOME/.kube/letsbit-htz-stage.yaml:$HOME/.kube/letsbit-htz-tools.yaml:$HOME/.kube/letsbit-htz-prod-usa.yaml";
       RUBY_CONFIGURE_OPTS = "--with-openssl-dir=${pkgs.openssl_3.dev} --with-readline-dir=${pkgs.readline} --with-libyaml-dir=${pkgs.libyaml}";
       EDITOR = "nvim";
       _JAVA_AWT_WM_NONREPARENTING = "1";
@@ -100,6 +99,14 @@
 
       NIXPKGS_ALLOW_UNFREE = "1";
     };
+
+    # Not in sessionVariables: home-manager guards that block with
+    # __HM_ZSH_SESS_VARS_SOURCED, so a nested shell never picks up a changed
+    # value and the whole graphical session has to be restarted. envExtra lands
+    # in .zshenv unguarded, so `exec zsh` is enough after a rebuild.
+    envExtra = ''
+      export KUBECONFIG="$HOME/.kube/letsbit-htz-stage.yaml:$HOME/.kube/letsbit-htz-tools.yaml:$HOME/.kube/letsbit-htz-prod-usa.yaml"
+    '';
 
     shellAliases = {
       cupp = "python3 ~/Tools/cupp/cupp.py";

@@ -7,7 +7,8 @@
   ...
 }: let
   # Everything the bar shows comes from the JSON Claude Code pipes in on stdin —
-  # including .context_window.used_percentage, so no ccstatusline/npx needed.
+  # including .context_window.used_percentage and .rate_limits, so no ccstatusline/npx
+  # needed.
   statusLine = pkgs.writeShellApplication {
     name = "claude-statusline";
     runtimeInputs = [pkgs.git pkgs.jq];
@@ -15,9 +16,41 @@
       # printf %f parses "17.34", not "17,34", whatever the ambient locale is.
       export LC_ALL=C
 
+      # Colors are ANSI indices on purpose: the terminal palette is stylix-themed,
+      # so the bar follows the scheme without hardcoding any hex.
+      color_for() {
+        if [ "$1" -lt 50 ]; then printf '32'
+        elif [ "$1" -lt 80 ]; then printf '33'
+        else printf '31'
+        fi
+      }
+
+      # nf-md-circle_slice_1..8 plus nf-md-circle_outline for empty: a dial that
+      # fills in eighths, like the usage ring in the web app. JetBrainsMono Nerd
+      # Font is the stylix monospace on both hosts, so the glyphs are always there.
+      # Literal glyphs, not \u escapes: under LC_ALL=C bash printf echoes those back
+      # verbatim instead of resolving them.
+      wheel_for() {
+        # ceil(pct / 12.5), so anything above zero already shows a slice.
+        case $((($1 * 8 + 99) / 100)) in
+          0) printf '󰝦' ;;
+          1) printf '󰪢' ;;
+          2) printf '󰪣' ;;
+          3) printf '󰪤' ;;
+          4) printf '󰪥' ;;
+          5) printf '󰪦' ;;
+          6) printf '󰪧' ;;
+          7) printf '󰪨' ;;
+          *) printf '󰪩' ;;
+        esac
+      }
+
       input=$(cat)
       cwd=$(jq -r '.workspace.current_dir // .cwd // ""' <<<"$input")
       pct=$(jq -r '.context_window.used_percentage // ""' <<<"$input")
+      # rate_limits only ships on subscription sessions that have limit data.
+      five=$(jq -r '.rate_limits.five_hour.used_percentage // ""' <<<"$input")
+      week=$(jq -r '.rate_limits.seven_day.used_percentage // ""' <<<"$input")
       [ -d "$cwd" ] || cwd=$PWD
 
       if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
@@ -41,18 +74,21 @@
         out=$(printf '\033[1;36m%s\033[0m' "''${cwd/#$HOME/\~}")
       fi
 
-      # Colors are ANSI indices on purpose: the terminal palette is stylix-themed,
-      # so the bar follows the scheme without hardcoding any hex.
       if [ -n "$pct" ]; then
         rounded=$(printf '%.0f' "$pct")
-        if [ "$rounded" -lt 50 ]; then
-          color=32
-        elif [ "$rounded" -lt 80 ]; then
-          color=33
-        else
-          color=31
-        fi
-        out=$(printf '%s | \033[1;%sm%.1f%%\033[0m' "$out" "$color" "$pct")
+        out=$(printf '%s | \033[1;%sm%.1f%%\033[0m' "$out" "$(color_for "$rounded")" "$pct")
+      fi
+
+      # Usage limits sit hard right: the wheel is the current (5h) window, the
+      # 7d figure the weekly one.
+      if [ -n "$five" ]; then
+        rounded=$(printf '%.0f' "$five")
+        out=$(printf '%s | \033[1;%sm%s %s%%\033[0m' \
+          "$out" "$(color_for "$rounded")" "$(wheel_for "$rounded")" "$rounded")
+      fi
+      if [ -n "$week" ]; then
+        rounded=$(printf '%.0f' "$week")
+        out=$(printf '%s | \033[1;%sm7d %s%%\033[0m' "$out" "$(color_for "$rounded")" "$rounded")
       fi
 
       printf '%s' "$out"
