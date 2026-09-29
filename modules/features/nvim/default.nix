@@ -179,6 +179,19 @@ in {
         action = ":nohlsearch<CR>";
         options.desc = "Clear search highlights";
       }
+
+      # Copy current file's absolute path to the system clipboard
+      {
+        mode = "n";
+        key = "<leader>yp";
+        action.__raw = ''
+          function()
+            local path = vim.fn.expand("%:p")
+            vim.fn.setreg("+", path)
+          end
+        '';
+        options.desc = "Copy file path";
+      }
     ];
 
     # Extra configuration
