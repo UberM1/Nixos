@@ -20,7 +20,7 @@
       formatters = {
         clang_format = {
           command = "clang-format";
-          args = ["--style={BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 100, Standard: c++20}"];
+          args = ["--style=file" "--fallback-style=Google" "-assume-filename" "$FILENAME"];
         };
       };
     };

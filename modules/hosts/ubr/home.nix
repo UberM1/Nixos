@@ -25,6 +25,7 @@
     ../../features-nixos/home/gtk.nix
     ../../features-nixos/home/dolphin.nix
     ../../features-nixos/home/lutris.nix
+    ../../features-nixos/home/strudel
     ../../features-nixos/home/scripts.nix
     ../../features-nixos/home/bars/noctalia.nix
   ];
