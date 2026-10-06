@@ -8,6 +8,7 @@
     ../../features-darwin/system/databases.nix
     ../../features-darwin/system/ruby.nix
     ../../features-darwin/system/golang.nix
+    ../../features-darwin/system/java.nix
   ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";

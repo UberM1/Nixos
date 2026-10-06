@@ -95,17 +95,18 @@ _: {
         alt-r = "mode resize";
       };
 
+      # Monitor sequence numbers, assigned left to right: 1 = left screen, 2 = right.
       workspace-to-monitor-force-assignment = {
-        "1" = "secondary";
-        "2" = "secondary";
-        "3" = "secondary";
-        "4" = "secondary";
-        "5" = "secondary";
-        "6" = "main";
-        "7" = "main";
-        "8" = "main";
-        "9" = "main";
-        "10" = "main";
+        "1" = 1;
+        "2" = 1;
+        "3" = 1;
+        "4" = 1;
+        "5" = 1;
+        "6" = 2;
+        "7" = 2;
+        "8" = 2;
+        "9" = 2;
+        "10" = 2;
       };
 
       mode.resize.binding = {
