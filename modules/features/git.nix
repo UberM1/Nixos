@@ -9,6 +9,7 @@ _: {
       pull.rebase = true;
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
+      branch.autoSetupMerge = "simple";
       safe.directory = "/etc/nixos";
     };
   };

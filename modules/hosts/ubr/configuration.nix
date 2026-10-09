@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ../../features-nixos/system/desktop-utils.nix
     ../../features-nixos/system/privileged.nix
@@ -18,6 +22,7 @@
 
     # DDC/CI for monitor brightness control
     kernelModules = ["i2c-dev"];
+    initrd.kernelModules = ["nvme"];
     kernelParams = ["quiet" "loglevel=3"];
     blacklistedKernelModules = ["algif_aead"];
   };
@@ -94,6 +99,7 @@
 
   # Display manager
   services.displayManager.ly.enable = true;
+  systemd.services.home-manager-ubr.before = lib.mkForce [];
 
   # XDG
   xdg = {
