@@ -110,8 +110,12 @@
       tmp=$(mktemp "$settings.XXXXXX")
       # remoteControlAtStartup: sessions start with Remote Control off; /remote-control
       # still turns it on for the session that asks for it.
+      # attribution: the empty strings drop the Co-Authored-By trailer from commits and
+      # the "Generated with" line from MR descriptions. Both are on by default, and the
+      # harness asks for them every session until this says otherwise.
       if ! jq '.statusLine = {type: "command", command: "bash ~/.claude/statusline.sh"}
-              | .remoteControlAtStartup = false' \
+              | .remoteControlAtStartup = false
+              | .attribution = {commit: "", pr: ""}' \
         "$settings" >"$tmp"; then
         echo "claude: $settings is not valid JSON, leaving it alone" >&2
         rm -f "$tmp"
