@@ -20,6 +20,7 @@
     ../../features-nixos/home/hypr
     ../../features-nixos/home/gaming.nix
     ../../features-nixos/home/hacking.nix
+    ../../features-nixos/home/reversing.nix
     ../../features-nixos/home/work-pkgs.nix
     ../../features-nixos/home/rofi.nix
     ../../features-nixos/home/gtk.nix
