@@ -8,6 +8,8 @@
     kustomize
     kubent
     kubernetes-helm
+    argocd
     gcx # grafana cli
+    jira-cli-go
   ];
 }
