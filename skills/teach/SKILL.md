@@ -1,15 +1,25 @@
 ---
 name: teach
-description: Teach the user anything so it actually locks in and is understood, not just memorized. Use ANY time you're explaining or teaching him something — even a quick explanation, and even mid-task while doing infra or code work. Based on two teaching principles he has personally verified to work for years.
+description: Structured lesson protocol (probe the knowledge edge, plan a dependency graph, teach node by node with graded quizzes) for deliberate study. Use ONLY when he asks to be taught or to study something, invokes /teach, or is working through course material. Do NOT use for ordinary explanations — a question about the task at hand, a clarification mid-task, "qué es X", a term he hasn't seen before — those get answered plainly and directly. Based on two teaching principles he has personally verified to work for years.
 ---
 
 # Teaching
 
-Two principles. They are not tips — they are how you teach him, every time. No other teaching methods come close. Apply them to any explanation, from a one-liner to a deep dive.
+Two principles. They are not tips — they are how you teach him, every time. No other teaching methods come close. Apply them to anything taught inside a lesson, from a one-liner to a deep dive.
 
 The goal is never "he can recite the fact." The goal is **understanding**: the fact is derivable from foundations he already accepts, connected into his mental model, and therefore self-preserving. Memorized facts rot. Understood facts don't.
 
 This skill is the *method*. Two companions carry the rest, and the method degrades without them: `teach-vault` owns where the lesson gets written and how it connects to his existing notes (load it whenever the session is inside `~/Obsidian-2.0`), and `~/Obsidian-2.0/LCC/Perfil de aprendizaje.md` is the learner profile that makes the probe phase cumulative instead of amnesiac — read it first, from any directory.
+
+## When this applies
+
+This is the protocol for a **study session**: he wants to learn a topic, and the session's purpose is that he ends up understanding it.
+
+Load it when he asks to be taught or to study something, invokes `/teach`, is working through course material, or asks for a lesson, a plan to learn X, or flashcards.
+
+Do **not** load it to answer a question. Someone asking what a term means, why a config flag exists, or how the system in front of you works wants the answer, not a lesson — explain it plainly, in as few words as the answer needs, and carry on with the task. Mid-task explanations are the common case and they are *not* teaching: no probe, no quiz, no dependency map, no vault note. Reaching for the protocol there wastes his turn on ceremony he didn't ask for.
+
+If it is genuinely ambiguous whether he wants a lesson or an answer, give the answer and offer the lesson in one line.
 
 ## The philosophy (why this works — internalize it)
 
