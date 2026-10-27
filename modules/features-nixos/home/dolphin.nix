@@ -104,10 +104,14 @@ in {
       "application/json" = "nvim-kitty.desktop";
       "text/x-python" = "nvim-kitty.desktop";
       "application/pdf" = "firefox.desktop";
+      "inode/directory" = "org.kde.dolphin.desktop";
+      "x-directory/normal" = "org.kde.dolphin.desktop";
+      "x-scheme-handler/file" = "org.kde.dolphin.desktop";
     };
     # Allow user choices to override these defaults
     associations.removed = {
       "application/pdf" = ["chromium-browser.desktop"];
+      "inode/directory" = ["kitty-open.desktop"];
     };
   };
 }
