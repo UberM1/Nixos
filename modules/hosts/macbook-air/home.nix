@@ -21,6 +21,7 @@
     ../../features-darwin/home/sketchybar.nix
     ../../features-darwin/home/cli-packages.nix
     ../../features-darwin/home/ruby.nix
+    ../../features-darwin/home/games.nix
   ];
 
   claude.skillsRepoPath = "/Users/matiasuberti/Nixos/skills";

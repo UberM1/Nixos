@@ -15,7 +15,6 @@
     mysql84
     pkgs-unstable.colima
     docker_29
-    vscode
     google-chrome
   ];
 }

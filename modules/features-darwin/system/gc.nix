@@ -7,12 +7,13 @@
   user = config.system.primaryUser;
   userHome = config.users.users.${user}.home;
 
-  colima =
+  inherit
     (import inputs.nixpkgs-unstable {
       inherit (pkgs.stdenv.hostPlatform) system;
       config.allowUnfree = true;
     })
-    .colima;
+    colima
+    ;
 
   nixBin = "/nix/var/nix/profiles/default/bin";
 

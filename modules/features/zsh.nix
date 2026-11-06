@@ -90,7 +90,7 @@
       DOCKER_HOST = "unix://$HOME/.colima/docker.sock";
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE = "/var/run/docker.sock";
       DISABLE_SPRING = "true";
-      RUBY_CONFIGURE_OPTS = "--with-openssl-dir=${pkgs.openssl_3.dev} --with-readline-dir=${pkgs.readline} --with-libyaml-dir=${pkgs.libyaml}";
+      RUBY_CONFIGURE_OPTS = "--with-openssl-dir=${pkgs.openssl.dev} --with-readline-dir=${pkgs.readline} --with-libyaml-dir=${pkgs.libyaml}";
       EDITOR = "nvim";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       GEM_HOME = "$HOME/.local/share/gem/ruby/3.3.0";

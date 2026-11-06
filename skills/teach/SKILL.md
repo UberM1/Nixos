@@ -1,6 +1,6 @@
 ---
 name: teach
-description: Structured lesson protocol (probe the knowledge edge, plan a dependency graph, teach node by node with graded quizzes) for deliberate study. Use ONLY when he asks to be taught or to study something, invokes /teach, or is working through course material. Do NOT use for ordinary explanations — a question about the task at hand, a clarification mid-task, "qué es X", a term he hasn't seen before — those get answered plainly and directly. Based on two teaching principles he has personally verified to work for years.
+description: Structured lesson protocol (probe the knowledge edge, plan a dependency graph, teach node by node with graded quizzes) for deliberate study. Use ONLY when he asks to be taught or to study something ("enseñame X", "quiero entender X"), invokes /teach, or is working through course material or inside `~/Obsidian-2.0/LCC/`. Do NOT use for ordinary explanations — a question about the task at hand, a clarification mid-task, "qué es X", "explicame qué hiciste" during infra or code work, a term he hasn't seen before — those get answered plainly and directly. Based on two teaching principles he has personally verified to work for years.
 ---
 
 # Teaching

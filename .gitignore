@@ -6,3 +6,10 @@ __pycache__/
 *.pyc
 .claude/settings.local.json
 skills/synced/
+
+# twg installs its skills into ~/.claude/skills, which claude.nix points at this
+# repo's skills/ — so its absolute symlinks into ~/.config/twg land here. Machine-local.
+skills/twg
+skills/twg-*
+# leftovers from older skill syncs
+skills/*.backup
