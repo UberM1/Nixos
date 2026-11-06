@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ../../features-nixos/system/appgate.nix
     ../../features-nixos/system/desktop-utils.nix
     ../../features-nixos/system/privileged.nix
     ../../features-nixos/system/dolphin.nix

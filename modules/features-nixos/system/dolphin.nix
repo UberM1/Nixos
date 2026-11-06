@@ -30,6 +30,9 @@ in {
 
     # Additional Dolphin functionality
     kdePackages.ark
+    unrar
+    unar
+    p7zip
     kdePackages.audiocd-kio
     kdePackages.baloo
     kdePackages.dolphin-plugins
