@@ -11,6 +11,7 @@
     ../../features/cli-packages.nix
     ../../features/work-pkgs.nix
     ../../features/claude.nix
+    ../../features/orca-slicer.nix
 
     # NixOS-only home features
     ../../features-nixos/home/apps.nix

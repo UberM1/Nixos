@@ -15,6 +15,7 @@
     ../../features/git.nix
     ../../features/cli-packages.nix
     ../../features/work-pkgs.nix
+    ../../features/orca-slicer.nix
 
     # Darwin-only home features
     ../../features-darwin/home/aerospace.nix
@@ -22,6 +23,7 @@
     ../../features-darwin/home/cli-packages.nix
     ../../features-darwin/home/ruby.nix
     ../../features-darwin/home/games.nix
+    ../../features-darwin/home/spotlight-apps.nix
   ];
 
   claude.skillsRepoPath = "/Users/matiasuberti/Nixos/skills";
