@@ -3,9 +3,9 @@
   programs.bat.enable = true;
   programs.lazygit = {
     enable = true;
-    settings.git.pagers = [
+    settings.git.diffRenderers = [
       {
-        pager = "delta --paging=never --features=lazygit";
+        command = "delta --paging=never --features=lazygit";
         colorArg = "always";
       }
     ];
